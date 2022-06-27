@@ -20,42 +20,62 @@
 ** DEALINGS IN THE SOFTWARE.
 **
 *****************************************************************************/
+#ifndef QUESTION_H
+#define QUESTION_H
 
-#ifndef TASK_H
-#define TASK_H
-
-#include <memory>
+#include <string>
 
 
 /**
- * @brief Calculation task consisting of a Question and an Answer.
+ * @brief Calculation question interface.
  */
-class Task
+class Question
 {
 
 public:
 
-    /**
-     * Constructor
-     * @param id Task id.
-     */
-    Task(unsigned int id);
+    Question();
+    virtual ~Question();
 
     /**
-     * Destructor
+     * Return string representation of question.
+     * @return String
      */
-    virtual ~Task();
+    virtual std::string toString() const = 0;
 
     /**
-     * Return task id.
-     * @return task id.
+     * Parse and store the given anser.
+     * @param answer as string.
      */
-    unsigned int id() const;
+    virtual void parseAnswer(const std::string& answer) = 0;
 
+    /**
+     * Was qustion solved correctly.
+     */
+    virtual bool isCorrect() const = 0;
+
+    /**
+     * Was the question answered.
+     */
+    bool isAnswered() const;
 
 protected:
-
-    unsigned int m_id;
+    bool m_answered;
 };
 
-#endif // TASK_H
+
+/**
+ * @brief Factory for calculation questions
+ */
+class QuestionFactory
+{
+public:
+
+    /**
+     * Creates questions. Question should be crated randomly.
+     * @return Question
+     */
+    virtual std::shared_ptr<Question> createQuestion() = 0;
+};
+
+#endif // QUESTION_H
