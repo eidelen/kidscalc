@@ -24,6 +24,7 @@
 #define QUESTION_H
 
 #include <string>
+#include <memory>
 
 
 /**
