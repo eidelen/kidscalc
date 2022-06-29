@@ -22,21 +22,41 @@
 *****************************************************************************/
 
 
-#include "task.h"
+#include "play.h"
 
 
-
-Task::Task(unsigned int id): m_id(id)
+Play::Play(size_t nbrOfQuestions, std::shared_ptr<QuestionFactory> qFactory)
+    : m_nbrOfQuestions(nbrOfQuestions), m_nbrOfQuestionsAlreadyAsked(0), m_qFactory(qFactory)
 {
 
 }
 
-Task::~Task()
+Play::~Play()
 {
 
 }
 
-unsigned int Task::id() const
+std::shared_ptr<Question> Play::nextQuestion()
 {
-    return m_id;
+    if(m_nbrOfQuestionsAlreadyAsked < m_nbrOfQuestions)
+    {
+        std::shared_ptr<Question> q = m_qFactory->createQuestion();
+        m_questions.push_back(q);
+        m_nbrOfQuestionsAlreadyAsked++;
+        return q;
+    }
+    else
+    {
+        return std::shared_ptr<Question>(nullptr);
+    }
+}
+
+size_t Play::nbrOfQuestions() const
+{
+    return m_nbrOfQuestions;
+}
+
+size_t Play::nbrOfQuestionsAlreadyAsked() const
+{
+    return m_nbrOfQuestionsAlreadyAsked;
 }

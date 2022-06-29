@@ -21,41 +21,50 @@
 **
 *****************************************************************************/
 
-#ifndef TASK_H
-#define TASK_H
+#ifndef PLAY_H
+#define PLAY_H
 
 #include <memory>
+#include <vector>
 
+#include "question.h"
 
 /**
- * @brief Calculation task consisting of a Question and an Answer.
+ * @brief Calculation play consisting of Questions.
  */
-class Task
+class Play
 {
 
 public:
 
     /**
-     * Constructor
-     * @param id Task id.
+     * Constructs a play
+     * @param nbrOfQuestions Number of questions
+     * @param qFactory Questions factory.
      */
-    Task(unsigned int id);
+    Play(size_t nbrOfQuestions, std::shared_ptr<QuestionFactory> qFactory);
 
     /**
      * Destructor
      */
-    virtual ~Task();
+    virtual ~Play();
 
     /**
-     * Return task id.
-     * @return task id.
+     * Returns the next question.
+     * @return Next question. When no one left, nullptr.
      */
-    unsigned int id() const;
+    std::shared_ptr<Question> nextQuestion();
 
+
+    size_t nbrOfQuestions() const;
+    size_t nbrOfQuestionsAlreadyAsked() const;
 
 protected:
 
-    unsigned int m_id;
+    size_t m_nbrOfQuestions;
+    size_t m_nbrOfQuestionsAlreadyAsked;
+    std::shared_ptr<QuestionFactory> m_qFactory;
+    std::vector<std::shared_ptr<Question>> m_questions;
 };
 
-#endif // TASK_H
+#endif // PLAY_H

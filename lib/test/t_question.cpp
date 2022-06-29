@@ -117,6 +117,8 @@ TEST(SumQuestion, BasicUsage)
     ASSERT_TRUE(s1->isCorrect());
 
     ASSERT_STRCASEEQ(s1->getRightAnswer().c_str(), "15");
+
+    delete s1;
 }
 
 TEST(SumQuestion, Heavy)
@@ -128,5 +130,7 @@ TEST(SumQuestion, Heavy)
         std::string qstr = s->toString();
 
         ASSERT_EQ(i-1, std::count(qstr.begin(), qstr.end(), '+'));
+
+        delete s;
     }
 }
