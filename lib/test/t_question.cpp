@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include <gtest/gtest.h>
 #include "question.h"
 
@@ -9,7 +10,7 @@ public:
     MyQuestion(): Question()
     {
         m_questionAsString = "1200 + 34";
-        m_rightAnswerAsString = "1234";
+        m_trueResultAsString = "1234";
     }
 
     ~MyQuestion()
@@ -101,7 +102,31 @@ TEST(QuestionFactory, BasicInterface)
 
 /*****************************************************************/
 
-TEST(SumQuestion, Usage)
+TEST(SumQuestion, BasicUsage)
 {
-    // todo
+    auto s1 = new SumQuestion({5, 5}, 3); // must be 15
+
+    ASSERT_FALSE(s1->isCorrect());
+    ASSERT_FALSE(s1->isAnswered());
+
+    ASSERT_STRCASEEQ(s1->toString().c_str(), "5 + 5 + 5");
+
+    s1->parseAnswer("15");
+
+    ASSERT_TRUE(s1->isAnswered());
+    ASSERT_TRUE(s1->isCorrect());
+
+    ASSERT_STRCASEEQ(s1->getRightAnswer().c_str(), "15");
+}
+
+TEST(SumQuestion, Heavy)
+{
+    for(size_t i = 2; i < 100; i++ )
+    {
+        auto s = new SumQuestion({0, 100}, i);
+
+        std::string qstr = s->toString();
+
+        ASSERT_EQ(i-1, std::count(qstr.begin(), qstr.end(), '+'));
+    }
 }

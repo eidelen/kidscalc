@@ -71,7 +71,7 @@ public:
 protected:
     bool m_answered;
     std::string m_questionAsString;
-    std::string m_rightAnswerAsString;
+    std::string m_trueResultAsString;
 };
 
 

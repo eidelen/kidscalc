@@ -25,7 +25,7 @@
 
 #include "question.h"
 
-Question::Question(): m_answered(false), m_questionAsString(""), m_rightAnswerAsString("")
+Question::Question(): m_answered(false), m_questionAsString(""), m_trueResultAsString("")
 {
 }
 
@@ -46,7 +46,7 @@ std::string Question::toString() const
 
 std::string Question::getRightAnswer() const
 {
-    return m_rightAnswerAsString;
+    return m_trueResultAsString;
 }
 
 
@@ -75,7 +75,7 @@ SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
         }
     }
 
-    m_questionAsString = m_questionAsString + " = ";
+    m_trueResultAsString = std::to_string(m_trueResult);
 }
 
 void SumQuestion::parseAnswer(const std::string &answer)
