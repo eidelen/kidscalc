@@ -25,6 +25,8 @@
 
 #include <string>
 #include <memory>
+#include <utility>
+#include <vector>
 
 
 /**
@@ -37,12 +39,6 @@ public:
 
     Question();
     virtual ~Question();
-
-    /**
-     * Return string representation of question.
-     * @return String
-     */
-    virtual std::string toString() const = 0;
 
     /**
      * Parse and store the given anser.
@@ -60,9 +56,44 @@ public:
      */
     bool isAnswered() const;
 
+    /**
+     * Return string representation of question.
+     * @return String
+     */
+    std::string toString() const;
+
+    /**
+     * Get the right answer as string.
+     * @return Righ answer string.
+     */
+    virtual std::string getRightAnswer() const;
+
 protected:
     bool m_answered;
+    std::string m_questionAsString;
+    std::string m_rightAnswerAsString;
 };
+
+
+class SumQuestion : public Question
+{
+public:
+    /**
+     * Ctor for summation question
+     * @param numberRange The range in which the used numbers are
+     * @param length How many number are summed
+     */
+    SumQuestion(std::pair<int,int> numberRange, size_t length);
+
+    // Question interface
+    void parseAnswer(const std::string &answer) override;
+    bool isCorrect() const override;
+
+private:
+    int m_trueResult;
+    int m_givenResult;
+};
+
 
 
 /**

@@ -21,11 +21,12 @@
 **
 *****************************************************************************/
 
+#include <random>
+
 #include "question.h"
 
-Question::Question(): m_answered(false)
+Question::Question(): m_answered(false), m_questionAsString(""), m_rightAnswerAsString("")
 {
-
 }
 
 Question::~Question()
@@ -36,4 +37,54 @@ Question::~Question()
 bool Question::isAnswered() const
 {
     return m_answered;
+}
+
+std::string Question::toString() const
+{
+    return m_questionAsString;
+}
+
+std::string Question::getRightAnswer() const
+{
+    return m_rightAnswerAsString;
+}
+
+
+/*********************** SumQuestion *********************************/
+
+SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
+
+    m_trueResult = 0;
+    m_questionAsString = "";
+
+    for(size_t i = 0; i < length; i++)
+    {
+        int nextOp = dist(gen);
+
+        m_trueResult += nextOp;
+
+        m_questionAsString = m_questionAsString + std::to_string(nextOp);
+
+        if( i+1 < length )
+        {
+            m_questionAsString = m_questionAsString + " + ";
+        }
+    }
+
+    m_questionAsString = m_questionAsString + " = ";
+}
+
+void SumQuestion::parseAnswer(const std::string &answer)
+{
+    m_answered = true;
+    m_givenResult = std::stoi(answer);
+}
+
+bool SumQuestion::isCorrect() const
+{
+    return (m_trueResult == m_givenResult);
 }

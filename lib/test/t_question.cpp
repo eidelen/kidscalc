@@ -8,7 +8,8 @@ class MyQuestion: public Question
 public:
     MyQuestion(): Question()
     {
-
+        m_questionAsString = "1200 + 34";
+        m_rightAnswerAsString = "1234";
     }
 
     ~MyQuestion()
@@ -17,10 +18,6 @@ public:
     }
 
     // Question interface
-    std::string toString() const override
-    {
-        return "1200 + 34";
-    }
 
     void parseAnswer(const std::string & answer) override
     {
@@ -43,6 +40,7 @@ TEST(Question, BasicInterface)
     ASSERT_FALSE(q->isAnswered());
     ASSERT_FALSE(q->isCorrect());
     ASSERT_STRCASEEQ(q->toString().c_str(), "1200 + 34");
+    ASSERT_STRCASEEQ(q->getRightAnswer().c_str(), "1234");
 
     q->parseAnswer("9999");
 
@@ -99,4 +97,11 @@ TEST(QuestionFactory, BasicInterface)
     ASSERT_TRUE(q->isCorrect());
 
     delete f;
+}
+
+/*****************************************************************/
+
+TEST(SumQuestion, Usage)
+{
+    // todo
 }
