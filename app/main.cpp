@@ -41,7 +41,7 @@ public:
 
     std::shared_ptr<Question> createQuestion() override
     {
-        return std::shared_ptr<Question>(new SumQuestion({0,10}, 2) ); // must be 20
+        return std::shared_ptr<Question>(new SumQuestion({0,10}, 2) );
     }
 };
 
@@ -59,14 +59,50 @@ int main(int argc, char *argv[])
     std::shared_ptr<Question> q = p->nextQuestion();
     while(q.get() != nullptr)
     {
-        std::cout << q->toString() << std::endl;
+        std::cout << " " << q->toString() << " = ";
 
         std::string answer = "";
         std::cin >> answer;
 
         q->parseAnswer(answer);
 
+        if( q->isCorrect() )
+        {
+            std::cout << " 😍" << std::endl << std::endl;
+        }
+        else
+        {
+            std::cout << " 🤨 " << "The correct answer is " << q->getRightAnswer() << std::endl << std::endl;
+        }
+
         q = p->nextQuestion();
+    }
+
+    auto[right, wrong, answered, unanswered] = p->getStat();
+
+    std::cout << "You got " << right << " right and " << wrong << " wrong." << std::endl;
+
+    double total = right + wrong;
+    double successRate = right / total;
+    if(successRate > 0.9999)
+    {
+        std::cout << " 🏆🏆🏆🏆🏆🏆🏆🏆" << std::endl;
+    }
+    else if(successRate > 0.7999)
+    {
+        std::cout << " 🥰🥰🥰" << std::endl;
+    }
+    else if(successRate > 0.4999)
+    {
+        std::cout << " 👌👌" << std::endl;
+    }
+    else if(successRate > 0.1999)
+    {
+        std::cout << " 🐈" << std::endl;
+    }
+    else
+    {
+        std::cout << " 🙈" << std::endl;
     }
 
     return 0;
