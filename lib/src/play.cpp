@@ -51,12 +51,19 @@ std::shared_ptr<Question> Play::nextQuestion()
     }
 }
 
-size_t Play::nbrOfQuestions() const
+std::tuple<size_t, size_t, size_t, size_t> Play::getStat() const
 {
-    return m_nbrOfQuestions;
+    size_t right = 0;
+    size_t wrong = 0;
+    size_t answered = 0;
+    size_t unanswered = 0;
+
+    for(const auto& q : m_questions)
+    {
+        q->isAnswered() ? answered++ : unanswered++;
+        q->isCorrect() ? right++ : wrong++;
+    }
+
+    return {right, wrong, answered, unanswered};
 }
 
-size_t Play::nbrOfQuestionsAlreadyAsked() const
-{
-    return m_nbrOfQuestionsAlreadyAsked;
-}

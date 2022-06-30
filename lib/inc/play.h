@@ -55,9 +55,12 @@ public:
      */
     std::shared_ptr<Question> nextQuestion();
 
+    /**
+     * Get statistics of current play.
+     * @return nbr right, nbr wrong, nbr answered, nbr unanswered
+     */
+    std::tuple<size_t, size_t, size_t, size_t> getStat() const;
 
-    size_t nbrOfQuestions() const;
-    size_t nbrOfQuestionsAlreadyAsked() const;
 
 protected:
 

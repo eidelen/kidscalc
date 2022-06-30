@@ -25,8 +25,14 @@ TEST(Play, GetQuestions)
 {
     auto p = new Play(3, std::shared_ptr<QuestionFactory>(new SumFactory()));
 
-    ASSERT_EQ(p->nbrOfQuestions(), 3);
-    ASSERT_EQ(p->nbrOfQuestionsAlreadyAsked(), 0);
+    {
+        auto[right, wrong, answered, unanswered] = p->getStat();
+
+        ASSERT_EQ(unanswered, 0);
+        ASSERT_EQ(answered, 0);
+        ASSERT_EQ(right, 0);
+        ASSERT_EQ(wrong, 0);
+    }
 
     std::shared_ptr<Question> q1 = p->nextQuestion();
     std::shared_ptr<Question> q2 = p->nextQuestion();
@@ -36,7 +42,61 @@ TEST(Play, GetQuestions)
     ASSERT_FALSE(q1.get()==nullptr);
     ASSERT_FALSE(q2.get()==nullptr);
     ASSERT_FALSE(q3.get()==nullptr);
-    ASSERT_TRUE(q4.get()==nullptr);
+    ASSERT_TRUE(q4.get()==nullptr); // 4th is nullptr
+
+    {
+        auto[right, wrong, answered, unanswered] = p->getStat();
+
+        ASSERT_EQ(unanswered, 3);
+        ASSERT_EQ(answered, 0);
+        ASSERT_EQ(right, 0);
+        ASSERT_EQ(wrong, 3);
+    }
+
+
+    delete p;
+}
+
+TEST(Play, AnswerQuestions)
+{
+    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new SumFactory()));
+
+    std::shared_ptr<Question> q1 = p->nextQuestion();
+    std::shared_ptr<Question> q2 = p->nextQuestion();
+    q1->parseAnswer("20");
+    q2->parseAnswer("15");
+
+    {
+        auto[right, wrong, answered, unanswered] = p->getStat();
+
+        ASSERT_EQ(unanswered, 0);
+        ASSERT_EQ(answered, 2);
+        ASSERT_EQ(right, 1);
+        ASSERT_EQ(wrong, 1);
+    }
+
+    // get 3rd question but dont answer yet
+    std::shared_ptr<Question> q3 = p->nextQuestion();
+
+    {
+        auto[right, wrong, answered, unanswered] = p->getStat();
+
+        ASSERT_EQ(unanswered, 1);
+        ASSERT_EQ(answered, 2);
+        ASSERT_EQ(right, 1);
+        ASSERT_EQ(wrong, 2);
+    }
+
+    q3->parseAnswer("20");
+
+    {
+        auto[right, wrong, answered, unanswered] = p->getStat();
+
+        ASSERT_EQ(unanswered, 0);
+        ASSERT_EQ(answered, 3);
+        ASSERT_EQ(right, 2);
+        ASSERT_EQ(wrong, 1);
+    }
 
     delete p;
 }
