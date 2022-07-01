@@ -51,7 +51,7 @@ std::shared_ptr<Question> Play::nextQuestion()
     }
 }
 
-std::tuple<size_t, size_t, size_t, size_t> Play::getStat() const
+std::tuple<size_t, size_t, size_t, size_t, double> Play::getStat() const
 {
     size_t right = 0;
     size_t wrong = 0;
@@ -64,6 +64,10 @@ std::tuple<size_t, size_t, size_t, size_t> Play::getStat() const
         q->isCorrect() ? right++ : wrong++;
     }
 
-    return {right, wrong, answered, unanswered};
+    double successRate = 0.0;
+    if(answered > 0)
+        successRate = ((double)right) / answered;
+
+    return {right, wrong, answered, unanswered, successRate};
 }
 

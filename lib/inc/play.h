@@ -57,9 +57,9 @@ public:
 
     /**
      * Get statistics of current play.
-     * @return nbr right, nbr wrong, nbr answered, nbr unanswered
+     * @return nbr right, nbr wrong, nbr answered, nbr unanswered, success rate
      */
-    std::tuple<size_t, size_t, size_t, size_t> getStat() const;
+    std::tuple<size_t, size_t, size_t, size_t, double> getStat() const;
 
 
 protected:

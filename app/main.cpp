@@ -41,7 +41,7 @@ public:
 
     std::shared_ptr<Question> createQuestion() override
     {
-        return std::shared_ptr<Question>(new SumQuestion({0,10}, 2) );
+        return std::shared_ptr<Question>(new SumQuestion({0, 10}, 2) );
     }
 };
 
@@ -52,57 +52,69 @@ public:
  */
 int main(int argc, char *argv[])
 {
-    std::cout << "KidsCalc Application, Adrian Schneider" << std::endl;
+    std::cout << "KidsCalc Application, Sohyi & Adrian Schneider" << std::endl << std::endl;
 
-    std::shared_ptr<Play> p = std::shared_ptr<Play>(new Play(5, std::shared_ptr<SumFactory>(new SumFactory())));
+    bool goToPlay = true;
 
-    std::shared_ptr<Question> q = p->nextQuestion();
-    while(q.get() != nullptr)
+    while(goToPlay)
     {
-        std::cout << " " << q->toString() << " = ";
+        std::shared_ptr<Play> p = std::shared_ptr<Play>(new Play(5, std::shared_ptr<SumFactory>(new SumFactory())));
 
-        std::string answer = "";
-        std::cin >> answer;
-
-        q->parseAnswer(answer);
-
-        if( q->isCorrect() )
+        std::shared_ptr<Question> q = p->nextQuestion();
+        while(q.get() != nullptr)
         {
-            std::cout << " 😍" << std::endl << std::endl;
+            std::cout << " " << q->toString() << " = ";
+
+            std::string answer = "";
+            std::cin >> answer;
+
+            q->parseAnswer(answer);
+
+            if( q->isCorrect() )
+            {
+                std::cout << " 😍" << std::endl << std::endl;
+            }
+            else
+            {
+                std::cout << " 🤨 " << "The correct answer is " << q->getRightAnswer() << std::endl << std::endl;
+            }
+
+            q = p->nextQuestion();
+        }
+
+        auto[right, wrong, answered, unanswered, successRate] = p->getStat();
+
+        std::cout << "You got " << right << " right and " << wrong << " wrong." << std::endl;
+
+        if(successRate > 0.9999)
+        {
+            std::cout << " 🏆🏆🏆🏆🏆🏆🏆🏆" << std::endl;
+        }
+        else if(successRate > 0.7999)
+        {
+            std::cout << " 🥰🥰🥰" << std::endl;
+        }
+        else if(successRate > 0.4999)
+        {
+            std::cout << " 👌👌" << std::endl;
+        }
+        else if(successRate > 0.1999)
+        {
+            std::cout << " 🐈" << std::endl;
         }
         else
         {
-            std::cout << " 🤨 " << "The correct answer is " << q->getRightAnswer() << std::endl << std::endl;
+            std::cout << " 🙈" << std::endl;
         }
 
-        q = p->nextQuestion();
-    }
+        std::cout << std::endl << "Press \"s\" to start again. Press \"x\" to quit: " << std::endl;
+        std::string ctrInput = "";
+        std::cin >> ctrInput;
 
-    auto[right, wrong, answered, unanswered] = p->getStat();
+        if(ctrInput == "x")
+            goToPlay = false;
 
-    std::cout << "You got " << right << " right and " << wrong << " wrong." << std::endl;
-
-    double total = right + wrong;
-    double successRate = right / total;
-    if(successRate > 0.9999)
-    {
-        std::cout << " 🏆🏆🏆🏆🏆🏆🏆🏆" << std::endl;
-    }
-    else if(successRate > 0.7999)
-    {
-        std::cout << " 🥰🥰🥰" << std::endl;
-    }
-    else if(successRate > 0.4999)
-    {
-        std::cout << " 👌👌" << std::endl;
-    }
-    else if(successRate > 0.1999)
-    {
-        std::cout << " 🐈" << std::endl;
-    }
-    else
-    {
-        std::cout << " 🙈" << std::endl;
+        std::cout << std::endl << std::endl;
     }
 
     return 0;
