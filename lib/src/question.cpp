@@ -78,6 +78,11 @@ SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
     m_trueResultAsString = std::to_string(m_trueResult);
 }
 
+SumQuestion::~SumQuestion()
+{
+
+}
+
 void SumQuestion::parseAnswer(const std::string &answer)
 {
     m_answered = true;
@@ -87,4 +92,48 @@ void SumQuestion::parseAnswer(const std::string &answer)
 bool SumQuestion::isCorrect() const
 {
     return (m_trueResult == m_givenResult);
+}
+
+/********************************************/
+
+SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool canBeNegative)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
+
+    // first is positive
+    m_trueResult = dist(gen);
+    m_questionAsString = "";
+
+    for(size_t i = 1; i < length; i++)
+    {
+        int nextOp = dist(gen);
+
+        m_trueResult -= nextOp;
+
+        m_questionAsString = m_questionAsString + std::to_string(nextOp);
+
+        if( i+1 < length )
+        {
+            m_questionAsString = m_questionAsString + " + ";
+        }
+    }
+
+    m_trueResultAsString = std::to_string(m_trueResult);
+}
+
+SubQuestion::~SubQuestion()
+{
+
+}
+
+void SubQuestion::parseAnswer(const std::string &answer)
+{
+
+}
+
+bool SubQuestion::isCorrect() const
+{
+
 }
