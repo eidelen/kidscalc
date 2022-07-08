@@ -134,3 +134,59 @@ TEST(SumQuestion, Heavy)
         delete s;
     }
 }
+
+/*****************************************************************/
+
+TEST(SubQuestion, BasicUsage)
+{
+    auto s1 = new SubQuestion({5, 5}, 3, true); // must be -5
+
+    ASSERT_FALSE(s1->isCorrect());
+    ASSERT_FALSE(s1->isAnswered());
+
+    ASSERT_STRCASEEQ(s1->toString().c_str(), "5 - 5 - 5");
+
+    s1->parseAnswer("-6");
+
+    ASSERT_TRUE(s1->isAnswered());
+    ASSERT_FALSE(s1->isCorrect());
+
+    s1->parseAnswer("-5");
+
+    ASSERT_TRUE(s1->isAnswered());
+    ASSERT_TRUE(s1->isCorrect());
+
+    ASSERT_STRCASEEQ(s1->getRightAnswer().c_str(), "-5");
+
+    delete s1;
+}
+
+TEST(SubQuestion, HeavyPos)
+{
+    for(size_t i = 2; i < 100; i++ )
+    {
+        auto s = new SubQuestion({0, 100}, 3, false);
+
+        std::string qstr = s->toString();
+
+        ASSERT_EQ(2, std::count(qstr.begin(), qstr.end(), '-'));
+
+        ASSERT_GE(std::stoi(s->getRightAnswer()), 0);
+
+        delete s;
+    }
+}
+
+TEST(SubQuestion, HeavyNeg)
+{
+    for(size_t i = 2; i < 100; i++ )
+    {
+        auto s = new SubQuestion({0, 100}, 3, true);
+
+        std::string qstr = s->toString();
+
+        ASSERT_EQ(2, std::count(qstr.begin(), qstr.end(), '-'));
+
+        delete s;
+    }
+}

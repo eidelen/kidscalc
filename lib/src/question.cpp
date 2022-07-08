@@ -22,6 +22,7 @@
 *****************************************************************************/
 
 #include <random>
+#include <iostream>
 
 #include "question.h"
 
@@ -102,25 +103,38 @@ SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool ca
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
 
-    // first is positive
-    m_trueResult = dist(gen);
-    m_questionAsString = "";
+    bool tryAnother = true;
 
-    for(size_t i = 1; i < length; i++)
+    while(tryAnother)
     {
-        int nextOp = dist(gen);
+        m_trueResult = 0;
+        m_questionAsString = "";
 
-        m_trueResult -= nextOp;
-
-        m_questionAsString = m_questionAsString + std::to_string(nextOp);
-
-        if( i+1 < length )
+        for(size_t i = 0; i < length; i++)
         {
-            m_questionAsString = m_questionAsString + " + ";
-        }
-    }
+            int nextOp = dist(gen);
 
-    m_trueResultAsString = std::to_string(m_trueResult);
+            if(i == 0)
+            {
+                // first is chosen positive
+                m_trueResult = nextOp;
+            }
+            else
+            {
+                m_trueResult -= nextOp;
+            }
+
+            m_questionAsString = m_questionAsString + std::to_string(nextOp);
+
+            if( i+1 < length )
+            {
+                m_questionAsString = m_questionAsString + " - ";
+            }
+        }
+
+        m_trueResultAsString = std::to_string(m_trueResult);
+        tryAnother = (!canBeNegative) && (m_trueResult < 0);
+    }
 }
 
 SubQuestion::~SubQuestion()
@@ -130,10 +144,11 @@ SubQuestion::~SubQuestion()
 
 void SubQuestion::parseAnswer(const std::string &answer)
 {
-
+    m_answered = true;
+    m_givenResult = std::stoi(answer);
 }
 
 bool SubQuestion::isCorrect() const
 {
-
+    return (m_trueResult == m_givenResult);
 }
