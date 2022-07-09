@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.11)
 
 PROJECT(kidscalcapp)
 
 MESSAGE(STATUS "Building kidscalc examples")
 
-# get argparse
+# fetch latest argparse
 include(FetchContent)
 FetchContent_Declare(
     argparse
