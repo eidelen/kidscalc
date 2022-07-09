@@ -23,6 +23,8 @@
 
 #include <iostream>
 
+#include <argparse/argparse.hpp>
+
 #include "play.h"
 #include "question.h"
 
@@ -45,6 +47,22 @@ public:
     }
 };
 
+class SubFactory : public QuestionFactory
+{
+public:
+    SubFactory(): QuestionFactory()
+    {
+    }
+
+    ~SubFactory()
+    {
+    }
+
+    std::shared_ptr<Question> createQuestion() override
+    {
+        return std::shared_ptr<Question>(new SubQuestion({0, 10}, 2, false) );
+    }
+};
 
 
 /**
@@ -58,7 +76,7 @@ int main(int argc, char *argv[])
 
     while(goToPlay)
     {
-        std::shared_ptr<Play> p = std::shared_ptr<Play>(new Play(5, std::shared_ptr<SumFactory>(new SumFactory())));
+        std::shared_ptr<Play> p = std::shared_ptr<Play>(new Play(5, std::shared_ptr<SubFactory>(new SubFactory())));
 
         std::shared_ptr<Question> q = p->nextQuestion();
         while(q.get() != nullptr)
