@@ -33,8 +33,10 @@
 class SumFactory : public QuestionFactory
 {
 public:
-    SumFactory(): QuestionFactory()
+    SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory()
     {
+        m_numberRange = numberRange;
+        m_length = length;
     }
 
     ~SumFactory()
@@ -43,8 +45,11 @@ public:
 
     std::shared_ptr<Question> createQuestion() override
     {
-        return std::shared_ptr<Question>(new SumQuestion({0, 10}, 2) );
+        return std::shared_ptr<Question>(new SumQuestion(m_numberRange, m_length) );
     }
+
+    std::pair<int,int> m_numberRange;
+    size_t m_length;
 };
 
 class SubFactory : public QuestionFactory
@@ -72,11 +77,32 @@ int main(int argc, char *argv[])
 {
     std::cout << "KidsCalc Application, Sohyi & Adrian Schneider" << std::endl << std::endl;
 
+    argparse::ArgumentParser kidsCalcArgs("KidsCalc");
+    kidsCalcArgs.add_argument("number_ops").help("Number of operators").scan<'i', size_t>();
+    kidsCalcArgs.add_argument("number_calcs").help("Number of calculations").scan<'i', size_t>();
+
+    try
+    {
+        kidsCalcArgs.parse_args(argc, argv);
+    }
+    catch (const std::runtime_error& err)
+    {
+        std::cerr << err.what() << std::endl;
+        std::cerr << kidsCalcArgs;
+        std::exit(1);
+    }
+
+    size_t nbrOps = kidsCalcArgs.get<size_t>("number_ops");
+    size_t nbrQuestions = kidsCalcArgs.get<size_t>("number_calcs");
+
+    std::shared_ptr<SumFactory> fact = std::shared_ptr<SumFactory>(new SumFactory({0, 10}, nbrOps));
+
+
     bool goToPlay = true;
 
     while(goToPlay)
     {
-        std::shared_ptr<Play> p = std::shared_ptr<Play>(new Play(5, std::shared_ptr<SubFactory>(new SubFactory())));
+        std::shared_ptr<Play> p = std::shared_ptr<Play>(new Play(nbrQuestions, fact));
 
         std::shared_ptr<Question> q = p->nextQuestion();
         while(q.get() != nullptr)
