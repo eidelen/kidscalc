@@ -79,7 +79,11 @@ int main(int argc, char *argv[])
 
     argparse::ArgumentParser kidsCalcArgs("KidsCalc");
     kidsCalcArgs.add_argument("number_ops").help("Number of operators").scan<'i', size_t>();
-    kidsCalcArgs.add_argument("number_calcs").help("Number of calculations").scan<'i', size_t>();
+    kidsCalcArgs.add_argument("lower_range").help("Min number used in calculation").scan<'i', int>();
+    kidsCalcArgs.add_argument("upper_range").help("Max number used in calculation").scan<'i', int>();
+    kidsCalcArgs.add_argument("-add").help("Addition questions").default_value(true).implicit_value(true);
+    kidsCalcArgs.add_argument("-sub").help("Subtraction questions").default_value(false).implicit_value(true);
+    kidsCalcArgs.add_argument("number_calcs").help("Number of questions").scan<'i', size_t>();
 
     try
     {
@@ -93,9 +97,20 @@ int main(int argc, char *argv[])
     }
 
     size_t nbrOps = kidsCalcArgs.get<size_t>("number_ops");
+    int lowerR = kidsCalcArgs.get<int>("lower_range");
+    int upperR = kidsCalcArgs.get<int>("upper_range");
     size_t nbrQuestions = kidsCalcArgs.get<size_t>("number_calcs");
 
-    std::shared_ptr<SumFactory> fact = std::shared_ptr<SumFactory>(new SumFactory({0, 10}, nbrOps));
+    std::shared_ptr<QuestionFactory> fact;
+
+    if(kidsCalcArgs["-sub"] == true)
+    {
+        fact = std::shared_ptr<SubFactory>(new SubFactory());
+    }
+    else
+    {
+        fact = std::shared_ptr<SumFactory>(new SumFactory({lowerR, upperR}, nbrOps));
+    }
 
 
     bool goToPlay = true;
