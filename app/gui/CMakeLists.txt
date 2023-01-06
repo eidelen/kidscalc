@@ -7,23 +7,32 @@ IF(${BUILDGUI})
 
     MESSAGE(STATUS "Building kidscalc GUI")
 
-    set(CMAKE_AUTOMOC ON)
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-    find_package(Qt6 6.2 COMPONENTS Quick Gui REQUIRED)
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
+
+    find_package(Qt6 6.2 COMPONENTS Widgets REQUIRED)
+
+    set(PROJECT_SOURCES
+            main.cpp
+            mainwindow.cpp
+            mainwindow.h
+            mainwindow.ui
+    )
 
     qt_add_executable(kidscalcgui
-        main.cpp
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
     )
 
-    target_link_libraries(kidscalcgui PRIVATE kidscalclib  Qt6::Gui  Qt6::Quick )
+    target_link_libraries(kidscalcgui PRIVATE kidscalclib  Qt6::Widgets)
     target_compile_features(kidscalcgui PRIVATE cxx_std_17 )
 
-    qt_add_qml_module(kidscalcgui
-        URI kc
-        VERSION 1.0
-        QML_FILES main.qml
-    )
+    qt_finalize_executable(kidscalcgui)
 
 ENDIF()
