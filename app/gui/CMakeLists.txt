@@ -23,6 +23,9 @@ IF(${BUILDGUI})
             mainwindow.cpp
             mainwindow.h
             mainwindow.ui
+            gameparam.cpp
+            gameparam.h
+            gameparam.ui
     )
 
     qt_add_executable(kidscalcgui

@@ -1,7 +1,10 @@
 #include <iostream>
 
+#include <QDialog>
+
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "gameparam.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -90,6 +93,10 @@ void MainWindow::deletePressed()
 
 void MainWindow::newGamePressed()
 {
+    GameParam* paramDialog = new GameParam();
+    paramDialog->exec();
+    delete paramDialog;
+
     newGame();
 }
 
