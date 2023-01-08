@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
 
 #include "play.h"
 #include "question.h"
@@ -45,6 +46,8 @@ public:
 
 private:
     void showNextQuestion();
+    void newGame();
+    void endGame();
 
 private slots:
   void numericPressed(int n);
@@ -55,5 +58,7 @@ private:
     Ui::MainWindow *ui;
     std::shared_ptr<QuestionFactory> m_QuestionFactory;
     std::shared_ptr<Play> m_Play;
+    QString m_outputText;
+    std::shared_ptr<Question> m_question;
 };
 #endif // MAINWINDOW_H

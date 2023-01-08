@@ -23,10 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnDel, &QPushButton::released, this, [this]{ deletePressed(); });
     connect(ui->btnGo, &QPushButton::released, this, [this]{ goPressed(); });
 
-    m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, 9}, 2));
-    m_Play = std::shared_ptr<Play>(new Play(3, m_QuestionFactory));
-
-    showNextQuestion();
+    newGame();
 }
 
 MainWindow::~MainWindow()
@@ -48,6 +45,32 @@ void MainWindow::numericPressed(int n)
 void MainWindow::goPressed()
 {
     std::cout << "Go pressed" << std::endl;
+
+    if( m_question.get() == nullptr )
+    {
+        std::cout << "No question" << std::endl;
+        return;
+    }
+
+    std::string answer = ui->resEdit->text().toStdString();
+
+    m_question->parseAnswer(answer);
+
+    QString resText = QString::fromStdString(m_question->toString()) + " = " + ui->resEdit->text();
+
+    if( m_question->isCorrect() )
+    {
+        std::cout << " 😍" << std::endl << std::endl;
+        m_outputText.append(resText + "  😍" + "\n");
+    }
+    else
+    {
+        std::cout << " 🤨 " << "The correct answer is " << m_question->getRightAnswer() << std::endl << std::endl;
+        m_outputText.append(resText + "  🤨 (" + QString::fromStdString(m_question->getRightAnswer()) + ")\n");
+    }
+
+    ui->outputPanel->setText(m_outputText);
+
     showNextQuestion();
 }
 
@@ -59,11 +82,60 @@ void MainWindow::deletePressed()
 
 void MainWindow::showNextQuestion()
 {
-    std::shared_ptr<Question> q = m_Play->nextQuestion();
-    if( q.get() != nullptr )
+    ui->resEdit->setText("");
+
+    m_question = m_Play->nextQuestion();
+    if( m_question.get() != nullptr )
     {
-        QString qText = QString::fromStdString(q->toString()) + " = ";
+        QString qText = QString::fromStdString(m_question->toString()) + " = ";
         ui->qLabel->setText(qText);
     }
+    else
+    {
+        endGame();
+    }
+}
+
+void MainWindow::newGame()
+{
+    // prepare ui for new game
+    m_outputText = "";
+    ui->outputPanel->setText(m_outputText);
+    ui->resEdit->setText("");
+
+    m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, 9}, 2));
+    m_Play = std::shared_ptr<Play>(new Play(3, m_QuestionFactory));
+
+    showNextQuestion();
+}
+
+void MainWindow::endGame()
+{
+    auto[right, wrong, answered, unanswered, successRate] = m_Play->getStat();
+    QString performance = QString::number(right) + " right, " + QString::number(wrong) + " wrong \n";
+
+    if(successRate > 0.9999)
+    {
+        performance.append("🏆🏆🏆🏆🏆🏆🏆🏆");
+    }
+    else if(successRate > 0.7999)
+    {
+        performance.append("🥰🥰🥰");
+    }
+    else if(successRate > 0.4999)
+    {
+        performance.append("👌👌");
+    }
+    else if(successRate > 0.1999)
+    {
+        performance.append("🐈");
+    }
+    else
+    {
+        performance.append("🙈");
+    }
+
+    m_outputText.append(performance);
+    ui->outputPanel->setText(m_outputText);
 }
 
