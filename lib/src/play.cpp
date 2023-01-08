@@ -71,3 +71,8 @@ std::tuple<size_t, size_t, size_t, size_t, double> Play::getStat() const
     return {right, wrong, answered, unanswered, successRate};
 }
 
+size_t Play::getNumberOfQuestions() const
+{
+    return m_nbrOfQuestions;
+}
+

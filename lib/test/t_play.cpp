@@ -105,3 +105,10 @@ TEST(Play, AnswerQuestions)
 
     delete p;
 }
+
+TEST(Play, GetTotalNbrQuestions)
+{
+    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new SumFactory()));
+    ASSERT_EQ(p->getNumberOfQuestions(), 3);
+    delete p;
+}

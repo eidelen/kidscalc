@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->btnDel, &QPushButton::released, this, [this]{ deletePressed(); });
     connect(ui->btnGo, &QPushButton::released, this, [this]{ goPressed(); });
+    connect(ui->newGameBtn, &QPushButton::released, this, [this]{ newGamePressed(); });
 
     newGame();
 }
@@ -53,6 +54,11 @@ void MainWindow::goPressed()
     }
 
     std::string answer = ui->resEdit->text().toStdString();
+    if(answer == "")
+    {
+        std::cout << "No input" << std::endl;
+        return;
+    }
 
     m_question->parseAnswer(answer);
 
@@ -71,6 +77,8 @@ void MainWindow::goPressed()
 
     ui->outputPanel->setText(m_outputText);
 
+    updateProgress();
+
     showNextQuestion();
 }
 
@@ -78,6 +86,11 @@ void MainWindow::deletePressed()
 {
     std::cout << "Delete pressed" << std::endl;
     ui->resEdit->setText("");
+}
+
+void MainWindow::newGamePressed()
+{
+    newGame();
 }
 
 void MainWindow::showNextQuestion()
@@ -98,15 +111,18 @@ void MainWindow::showNextQuestion()
 
 void MainWindow::newGame()
 {
-    // prepare ui for new game
     m_outputText = "";
     ui->outputPanel->setText(m_outputText);
     ui->resEdit->setText("");
 
-    m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, 9}, 2));
-    m_Play = std::shared_ptr<Play>(new Play(3, m_QuestionFactory));
+    m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, 5}, 2));
+    m_Play = std::shared_ptr<Play>(new Play(5, m_QuestionFactory));
+
+    ui->progressBar->setRange(0, m_Play->getNumberOfQuestions());
 
     showNextQuestion();
+
+    updateProgress();
 }
 
 void MainWindow::endGame()
@@ -137,5 +153,11 @@ void MainWindow::endGame()
 
     m_outputText.append(performance);
     ui->outputPanel->setText(m_outputText);
+}
+
+void MainWindow::updateProgress()
+{
+    auto[right, wrong, answered, unanswered, successRate] = m_Play->getStat();
+    ui->progressBar->setValue(answered);
 }
 

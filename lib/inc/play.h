@@ -61,6 +61,12 @@ public:
      */
     std::tuple<size_t, size_t, size_t, size_t, double> getStat() const;
 
+    /**
+     * Get the number of questions in this play.
+     * @return
+     */
+    size_t getNumberOfQuestions() const;
+
 
 protected:
 

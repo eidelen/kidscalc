@@ -48,11 +48,13 @@ private:
     void showNextQuestion();
     void newGame();
     void endGame();
+    void updateProgress();
 
 private slots:
   void numericPressed(int n);
   void goPressed();
   void deletePressed();
+  void newGamePressed();
 
 private:
     Ui::MainWindow *ui;
