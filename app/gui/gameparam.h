@@ -11,9 +11,29 @@ class GameParam : public QDialog
 {
     Q_OBJECT
 
+
+
 public:
     explicit GameParam(QWidget *parent = nullptr);
     ~GameParam();
+
+    enum OpType
+    {
+        Addition,
+        Subtraction
+    };
+
+    struct Params
+    {
+        OpType type;
+        size_t nbrOperands;
+        size_t nbrExercises;
+        int nbrRange;
+    };
+
+    Params getGameParams() const;
+
+
 
 private:
     Ui::GameParam *ui;

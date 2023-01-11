@@ -4,7 +4,6 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "gameparam.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,8 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnDel, &QPushButton::released, this, [this]{ deletePressed(); });
     connect(ui->btnGo, &QPushButton::released, this, [this]{ goPressed(); });
     connect(ui->newGameBtn, &QPushButton::released, this, [this]{ newGamePressed(); });
-
-    newGame();
 }
 
 MainWindow::~MainWindow()
@@ -94,10 +91,13 @@ void MainWindow::deletePressed()
 void MainWindow::newGamePressed()
 {
     GameParam* paramDialog = new GameParam();
-    paramDialog->exec();
-    delete paramDialog;
+    if(paramDialog->exec() == QDialog::Accepted)
+    {
+        GameParam::Params params = paramDialog->getGameParams();
+        newGame(params);
+    }
 
-    newGame();
+    delete paramDialog; 
 }
 
 void MainWindow::showNextQuestion()
@@ -116,14 +116,22 @@ void MainWindow::showNextQuestion()
     }
 }
 
-void MainWindow::newGame()
+void MainWindow::newGame(GameParam::Params params)
 {
     m_outputText = "";
     ui->outputPanel->setText(m_outputText);
     ui->resEdit->setText("");
 
-    m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, 5}, 2));
-    m_Play = std::shared_ptr<Play>(new Play(5, m_QuestionFactory));
+    if(params.type == GameParam::Addition)
+    {
+        m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, params.nbrRange}, params.nbrOperands));
+    }
+    else
+    {
+        m_QuestionFactory = std::shared_ptr<SubFactory>(new SubFactory({0, params.nbrRange}, params.nbrOperands));
+    }
+
+    m_Play = std::shared_ptr<Play>(new Play(params.nbrExercises, m_QuestionFactory));
 
     ui->progressBar->setRange(0, m_Play->getNumberOfQuestions());
 

@@ -12,3 +12,19 @@ GameParam::~GameParam()
 {
     delete ui;
 }
+
+GameParam::Params GameParam::getGameParams() const
+{
+    Params retParams;
+    QString typeText = ui->exType->currentText();
+    if(typeText == "Addition")
+        retParams.type = OpType::Addition;
+    else
+        retParams.type = OpType::Subtraction;
+
+    retParams.nbrOperands = ui->nbrOps->value();
+    retParams.nbrExercises = ui->nbrExercises->value();
+    retParams.nbrRange = ui->nbrRangeMax->value();
+
+    return retParams;
+}

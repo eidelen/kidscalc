@@ -390,7 +390,7 @@
       <x>400</x>
       <y>20</y>
       <width>281</width>
-      <height>531</height>
+      <height>511</height>
      </rect>
     </property>
     <property name="font">
@@ -416,10 +416,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="geometry">
      <rect>
       <x>400</x>
-      <y>560</y>
+      <y>540</y>
       <width>100</width>
-      <height>32</height>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>New Game</string>

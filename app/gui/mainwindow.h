@@ -6,13 +6,13 @@
 
 #include "play.h"
 #include "question.h"
+#include "gameparam.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 
-// only for fast testing
 class SumFactory : public QuestionFactory
 {
 public:
@@ -35,6 +35,28 @@ public:
     size_t m_length;
 };
 
+class SubFactory : public QuestionFactory
+{
+public:
+    SubFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory()
+    {
+        m_numberRange = numberRange;
+        m_length = length;
+    }
+
+    ~SubFactory()
+    {
+    }
+
+    std::shared_ptr<Question> createQuestion() override
+    {
+        return std::shared_ptr<Question>(new SubQuestion(m_numberRange, m_length, false) );
+    }
+
+    std::pair<int,int> m_numberRange;
+    size_t m_length;
+};
+
 
 class MainWindow : public QMainWindow
 {
@@ -46,7 +68,7 @@ public:
 
 private:
     void showNextQuestion();
-    void newGame();
+    void newGame(GameParam::Params params);
     void endGame();
     void updateProgress();
 
