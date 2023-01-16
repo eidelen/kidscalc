@@ -95,6 +95,7 @@ void MainWindow::newGamePressed()
     {
         GameParam::Params params = paramDialog->getGameParams();
         newGame(params);
+        paramDialog->storeParams();
     }
 
     delete paramDialog; 

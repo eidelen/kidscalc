@@ -33,6 +33,8 @@ public:
 
     Params getGameParams() const;
 
+    void storeParams() const;
+
 
 
 private:
