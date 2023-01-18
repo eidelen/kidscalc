@@ -34,6 +34,7 @@ public:
     Params getGameParams() const;
 
     void storeParams() const;
+    void loadParams();
 
 
 
