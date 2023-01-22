@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <QDialog>
+#include <QKeyEvent>
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -98,7 +99,15 @@ void MainWindow::newGamePressed()
         paramDialog->storeParams();
     }
 
-    delete paramDialog; 
+    delete paramDialog;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Return)
+    {
+        goPressed();
+    }
 }
 
 void MainWindow::showNextQuestion()

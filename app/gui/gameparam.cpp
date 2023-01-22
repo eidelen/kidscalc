@@ -14,6 +14,11 @@ GameParam::GameParam(QWidget *parent) :
     ui(new Ui::GameParam)
 {
     ui->setupUi(this);
+
+    // add operations to dropdown
+    ui->exType->addItem(getOperationString(OpType::Addition));
+    ui->exType->addItem(getOperationString(OpType::Subtraction));
+
     loadParams();
 }
 
@@ -26,7 +31,7 @@ GameParam::Params GameParam::getGameParams() const
 {
     Params retParams;
     QString typeText = ui->exType->currentText();
-    if(typeText == "Addition")
+    if(typeText == getOperationString(OpType::Addition))
         retParams.type = OpType::Addition;
     else
         retParams.type = OpType::Subtraction;
@@ -36,6 +41,16 @@ GameParam::Params GameParam::getGameParams() const
     retParams.nbrRange = ui->nbrRangeMax->value();
 
     return retParams;
+}
+
+QString GameParam::getOperationString(OpType type) const
+{
+    if(type == OpType::Addition)
+        return "Addition";
+    else if(type == OpType::Subtraction)
+        return "Subtraction";
+    else
+        return "Unknown";
 }
 
 void GameParam::storeParams() const
@@ -80,9 +95,9 @@ void GameParam::loadParams()
             if(tagName == "type")
             {
                 QString opsName = xml.readElementText();
-                if(opsName == "Addition")
+                if(opsName == getOperationString(OpType::Addition))
                     ui->exType->setCurrentIndex(0);
-                else if(opsName == "Subtraction")
+                else if(opsName == getOperationString(OpType::Subtraction))
                     ui->exType->setCurrentIndex(1);
             }
             else if(tagName == "nbrOperands")

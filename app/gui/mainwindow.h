@@ -84,5 +84,10 @@ private:
     std::shared_ptr<Play> m_Play;
     QString m_outputText;
     std::shared_ptr<Question> m_question;
+
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 };
 #endif // MAINWINDOW_H

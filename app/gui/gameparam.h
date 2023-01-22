@@ -11,8 +11,6 @@ class GameParam : public QDialog
 {
     Q_OBJECT
 
-
-
 public:
     explicit GameParam(QWidget *parent = nullptr);
     ~GameParam();
@@ -32,6 +30,8 @@ public:
     };
 
     Params getGameParams() const;
+
+    QString getOperationString(OpType type) const;
 
     void storeParams() const;
     void loadParams();
