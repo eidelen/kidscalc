@@ -2,6 +2,7 @@
 #define GAMEPARAM_H
 
 #include <QDialog>
+#include <vector>
 
 namespace Ui {
 class GameParam;
@@ -31,15 +32,12 @@ public:
 
     Params getGameParams() const;
 
-    QString getOperationString(OpType type) const;
-
     void storeParams() const;
     void loadParams();
 
-
-
 private:
     Ui::GameParam *ui;
+    std::vector<std::pair<QString, OpType>> m_types;
 };
 
 #endif // GAMEPARAM_H

@@ -15,9 +15,12 @@ GameParam::GameParam(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_types.push_back({"Addition", OpType::Addition});
+    m_types.push_back({"Subtraction", OpType::Subtraction});
+
     // add operations to dropdown
-    ui->exType->addItem(getOperationString(OpType::Addition));
-    ui->exType->addItem(getOperationString(OpType::Subtraction));
+    for(auto& [typeQStr, typeId] : m_types)
+        ui->exType->addItem(typeQStr);
 
     loadParams();
 }
@@ -30,27 +33,19 @@ GameParam::~GameParam()
 GameParam::Params GameParam::getGameParams() const
 {
     Params retParams;
+
     QString typeText = ui->exType->currentText();
-    if(typeText == getOperationString(OpType::Addition))
-        retParams.type = OpType::Addition;
-    else
-        retParams.type = OpType::Subtraction;
+    auto selectedType = std::find_if(m_types.begin(), m_types.end(), [&typeText](const std::pair<QString, OpType>& e) {
+        return typeText == e.first;
+    });
+    // default addition
+    retParams.type = selectedType == m_types.end() ? OpType::Addition : (*selectedType).second;
 
     retParams.nbrOperands = ui->nbrOps->value();
     retParams.nbrExercises = ui->nbrExercises->value();
     retParams.nbrRange = ui->nbrRangeMax->value();
 
     return retParams;
-}
-
-QString GameParam::getOperationString(OpType type) const
-{
-    if(type == OpType::Addition)
-        return "Addition";
-    else if(type == OpType::Subtraction)
-        return "Subtraction";
-    else
-        return "Unknown";
 }
 
 void GameParam::storeParams() const
@@ -95,10 +90,13 @@ void GameParam::loadParams()
             if(tagName == "type")
             {
                 QString opsName = xml.readElementText();
-                if(opsName == getOperationString(OpType::Addition))
-                    ui->exType->setCurrentIndex(0);
-                else if(opsName == getOperationString(OpType::Subtraction))
-                    ui->exType->setCurrentIndex(1);
+
+                auto foundType = std::find_if(m_types.begin(), m_types.end(), [&opsName](const std::pair<QString, OpType>& e) {
+                    return opsName == e.first;
+                });
+
+                int selectedIdx = foundType == m_types.end() ? 0 : std::distance(m_types.begin(), foundType);
+                ui->exType->setCurrentIndex(selectedIdx);
             }
             else if(tagName == "nbrOperands")
             {
