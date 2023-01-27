@@ -69,6 +69,7 @@ public:
     virtual std::string getRightAnswer() const;
 
 protected:
+    int getRandomIntegerInRange(std::pair<int,int> numberRange) const;
     bool m_answered;
     std::string m_questionAsString;
     std::string m_trueResultAsString;

@@ -50,21 +50,25 @@ std::string Question::getRightAnswer() const
     return m_trueResultAsString;
 }
 
+int Question::getRandomIntegerInRange(std::pair<int, int> numberRange) const
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
+    return dist(gen);
+}
+
 
 /*********************** SumQuestion *********************************/
 
 SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
-
     m_trueResult = 0;
     m_questionAsString = "";
 
     for(size_t i = 0; i < length; i++)
     {
-        int nextOp = dist(gen);
+        int nextOp = getRandomIntegerInRange(numberRange);
 
         m_trueResult += nextOp;
 
@@ -99,10 +103,6 @@ bool SumQuestion::isCorrect() const
 
 SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool canBeNegative)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
-
     bool tryAnother = true;
 
     while(tryAnother)
@@ -112,7 +112,7 @@ SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool ca
 
         for(size_t i = 0; i < length; i++)
         {
-            int nextOp = dist(gen);
+            int nextOp = getRandomIntegerInRange(numberRange);
 
             if(i == 0)
             {

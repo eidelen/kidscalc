@@ -27,47 +27,7 @@
 
 #include "play.h"
 #include "question.h"
-
-
-// only for fast testing
-class SumFactory : public QuestionFactory
-{
-public:
-    SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory()
-    {
-        m_numberRange = numberRange;
-        m_length = length;
-    }
-
-    ~SumFactory()
-    {
-    }
-
-    std::shared_ptr<Question> createQuestion() override
-    {
-        return std::shared_ptr<Question>(new SumQuestion(m_numberRange, m_length) );
-    }
-
-    std::pair<int,int> m_numberRange;
-    size_t m_length;
-};
-
-class SubFactory : public QuestionFactory
-{
-public:
-    SubFactory(): QuestionFactory()
-    {
-    }
-
-    ~SubFactory()
-    {
-    }
-
-    std::shared_ptr<Question> createQuestion() override
-    {
-        return std::shared_ptr<Question>(new SubQuestion({0, 10}, 2, false) );
-    }
-};
+#include "factories.h"
 
 
 /**
@@ -105,7 +65,7 @@ int main(int argc, char *argv[])
 
     if(kidsCalcArgs["-sub"] == true)
     {
-        fact = std::shared_ptr<SubFactory>(new SubFactory());
+        fact = std::shared_ptr<SubFactory>(new SubFactory({lowerR, upperR}, nbrOps));
     }
     else
     {

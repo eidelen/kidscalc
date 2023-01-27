@@ -3,6 +3,8 @@
 #include <QDialog>
 #include <QKeyEvent>
 
+#include "factories.h"
+
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 

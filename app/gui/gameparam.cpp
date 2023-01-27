@@ -19,7 +19,7 @@ GameParam::GameParam(QWidget *parent) :
     m_types.push_back({"Subtraction", OpType::Subtraction});
 
     // add operations to dropdown
-    for(auto& [typeQStr, typeId] : m_types)
+    for(const auto& [typeQStr, typeId] : m_types)
         ui->exType->addItem(typeQStr);
 
     loadParams();
