@@ -26,13 +26,15 @@
 
 #include "question.h"
 
+/**
+ * @brief The SumFactory class is the factory for simple addition questions.
+ */
 class SumFactory : public QuestionFactory
 {
 public:
-    SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory()
+    SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
+        m_numberRange(numberRange), m_length(length)
     {
-        m_numberRange = numberRange;
-        m_length = length;
     }
 
     ~SumFactory()
@@ -48,13 +50,15 @@ public:
     size_t m_length;
 };
 
+/**
+ * @brief The SubFactory class is the factory for simple subtractiuon questions.
+ */
 class SubFactory : public QuestionFactory
 {
 public:
-    SubFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory()
+    SubFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
+        m_numberRange(numberRange), m_length(length)
     {
-        m_numberRange = numberRange;
-        m_length = length;
     }
 
     ~SubFactory()

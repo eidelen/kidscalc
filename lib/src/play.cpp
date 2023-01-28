@@ -21,29 +21,24 @@
 **
 *****************************************************************************/
 
-
 #include "play.h"
-
 
 Play::Play(size_t nbrOfQuestions, std::shared_ptr<QuestionFactory> qFactory)
     : m_nbrOfQuestions(nbrOfQuestions), m_nbrOfQuestionsAlreadyAsked(0), m_qFactory(qFactory)
 {
-
 }
 
 Play::~Play()
 {
-
 }
 
 std::shared_ptr<Question> Play::nextQuestion()
 {
     if(m_nbrOfQuestionsAlreadyAsked < m_nbrOfQuestions)
     {
-        std::shared_ptr<Question> q = m_qFactory->createQuestion();
-        m_questions.push_back(q);
+        m_questions.push_back(m_qFactory->createQuestion());
         m_nbrOfQuestionsAlreadyAsked++;
-        return q;
+        return m_questions.back(); // return the just created question
     }
     else
     {
