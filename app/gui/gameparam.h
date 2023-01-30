@@ -28,12 +28,16 @@ public:
         size_t nbrOperands;
         size_t nbrExercises;
         int nbrRange;
+        QString imgDirPath;
     };
 
     Params getGameParams() const;
 
     void storeParams() const;
     void loadParams();
+
+private slots:
+  void imgPathPressed();
 
 private:
     Ui::GameParam *ui;

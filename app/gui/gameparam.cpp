@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+#include <QFileDialog>
 
 QString SettingsFileName = "params.txt";
 
@@ -23,6 +24,8 @@ GameParam::GameParam(QWidget *parent) :
         ui->exType->addItem(typeQStr);
 
     loadParams();
+
+    connect(ui->btnImgPath, &QPushButton::released, this, [this]{ imgPathPressed(); });
 }
 
 GameParam::~GameParam()
@@ -44,6 +47,7 @@ GameParam::Params GameParam::getGameParams() const
     retParams.nbrOperands = ui->nbrOps->value();
     retParams.nbrExercises = ui->nbrExercises->value();
     retParams.nbrRange = ui->nbrRangeMax->value();
+    retParams.imgDirPath = ui->imgPath->text();
 
     return retParams;
 }
@@ -64,6 +68,7 @@ void GameParam::storeParams() const
     stream.writeTextElement("nbrOperands", QString::number(ui->nbrOps->value()));
     stream.writeTextElement("nbrExercises", QString::number(ui->nbrExercises->value()));
     stream.writeTextElement("nbrRange", QString::number(ui->nbrRangeMax->value()));
+    stream.writeTextElement("imgDirPath", ui->imgPath->text());
 
     stream.writeEndElement();
 
@@ -110,6 +115,10 @@ void GameParam::loadParams()
             {
                 ui->nbrRangeMax->setValue( xml.readElementText().toInt());
             }
+            else if(tagName == "imgDirPath")
+            {
+                ui->imgPath->setText(xml.readElementText());
+            }
         }
     }
 
@@ -117,4 +126,13 @@ void GameParam::loadParams()
     {
         std::cout << "Error in xml file" << std::endl;
     }
+}
+
+void GameParam::imgPathPressed()
+{
+    std::cout << "Image Path Button pressed" << std::endl;
+
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Image Directory"),
+                                                    "", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    ui->imgPath->setText(dir);
 }
