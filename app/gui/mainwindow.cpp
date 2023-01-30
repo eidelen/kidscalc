@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_imgWidget = std::shared_ptr<ImageWidget>(new ImageWidget());
+
     connect(ui->btn0, &QPushButton::released, this, [this]{ numericPressed(0); });
     connect(ui->btn1, &QPushButton::released, this, [this]{ numericPressed(1); });
     connect(ui->btn2, &QPushButton::released, this, [this]{ numericPressed(2); });
@@ -146,6 +148,12 @@ void MainWindow::newGame(GameParam::Params params)
     m_Play = std::shared_ptr<Play>(new Play(params.nbrExercises, m_QuestionFactory));
 
     ui->progressBar->setRange(0, m_Play->getNumberOfQuestions());
+
+    if(params.imgDirPath != "None" && params.imgDirPath != "")
+    {
+        m_imgWidget->show();
+        m_imgWidget->resetImg(params.imgDirPath);
+    }
 
     showNextQuestion();
 

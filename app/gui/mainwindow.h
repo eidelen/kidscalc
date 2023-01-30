@@ -7,6 +7,7 @@
 #include "play.h"
 #include "question.h"
 #include "gameparam.h"
+#include "imagewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +39,7 @@ private:
     std::shared_ptr<Play> m_Play;
     QString m_outputText;
     std::shared_ptr<Question> m_question;
+    std::shared_ptr<ImageWidget> m_imgWidget;
 
 
 protected:
