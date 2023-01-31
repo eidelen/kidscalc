@@ -2,6 +2,7 @@
 #define IMAGEWIDGET_H
 
 #include <QWidget>
+#include <QPixmap>
 
 namespace Ui {
 class ImageWidget;
@@ -16,8 +17,18 @@ public:
     ~ImageWidget();
     void resetImg(QString imgDirPath);
 
+    /**
+     * Update the image quality.
+     * @param q 0.0 bad, 1.0 best
+     */
+    void updateQuality(double q);
+
+private:
+    bool loadImage(QString imgDirPath);
+
 private:
     Ui::ImageWidget *ui;
+    QPixmap m_rawImage;
 };
 
 #endif // IMAGEWIDGET_H

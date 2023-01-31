@@ -194,5 +194,8 @@ void MainWindow::updateProgress()
 {
     auto[right, wrong, answered, unanswered, successRate] = m_Play->getStat();
     ui->progressBar->setValue(answered);
+
+    double currentImgQuality = ((double)right)/m_Play->getNumberOfQuestions();
+    m_imgWidget->updateQuality(currentImgQuality);
 }
 
