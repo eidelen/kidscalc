@@ -44,10 +44,15 @@ void ImageWidget::resetImg(QString imgDirPath)
 
     std::cout << "Load img: " << imgFile.absoluteFilePath().toStdString() << std::endl;
 
-    if(!loadImage(imgFile.absoluteFilePath()))
+    QPixmap origImage = QPixmap(imgFile.absoluteFilePath());
+    if(origImage.isNull())
     {
         std::cout << "Could not load image" << std::endl;
     }
+
+    // scale image to raget size
+    int targetSize = 600;
+    m_rawImage = origImage.height() > origImage.width() ? origImage.scaledToHeight(targetSize, Qt::SmoothTransformation) : origImage.scaledToWidth(targetSize, Qt::SmoothTransformation);
 }
 
 void ImageWidget::updateQuality(double q)
@@ -78,8 +83,3 @@ void ImageWidget::updateQuality(double q)
     ui->imgLabel->setPixmap(QPixmap::fromImage(temp));
 }
 
-bool ImageWidget::loadImage(QString imgDirPath)
-{
-    m_rawImage = QPixmap(imgDirPath);
-    return !m_rawImage.isNull();
-}

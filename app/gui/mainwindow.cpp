@@ -108,9 +108,13 @@ void MainWindow::newGamePressed()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Return)
+    if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
     {
         goPressed();
+    }
+    else if(event->key() == Qt::Key_N)
+    {
+        newGamePressed();
     }
 }
 

@@ -24,9 +24,6 @@ public:
     void updateQuality(double q);
 
 private:
-    bool loadImage(QString imgDirPath);
-
-private:
     Ui::ImageWidget *ui;
     QPixmap m_rawImage;
 };
