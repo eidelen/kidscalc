@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include <QKeyEvent>
+#include <QIntValidator>
 
 #include "factories.h"
 
@@ -120,7 +121,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    std::cout << "Close Event" << std::endl;
     m_imgWidget->close();
     event->accept();
 }
