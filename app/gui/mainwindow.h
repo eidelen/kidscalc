@@ -44,6 +44,6 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
-
+    void closeEvent(QCloseEvent *event) override;
 };
 #endif // MAINWINDOW_H

@@ -118,6 +118,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    std::cout << "Close Event" << std::endl;
+    m_imgWidget->close();
+    event->accept();
+}
+
 void MainWindow::showNextQuestion()
 {
     ui->resEdit->setText("");
