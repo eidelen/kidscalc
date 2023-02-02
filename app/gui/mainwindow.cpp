@@ -200,6 +200,10 @@ void MainWindow::updateProgress()
     ui->progressBar->setValue(answered);
 
     double currentImgQuality = ((double)right)/m_Play->getNumberOfQuestions();
+
+    // enhance slowely!
+    currentImgQuality = std::pow(currentImgQuality, 2);
+
     m_imgWidget->updateQuality(currentImgQuality);
 }
 
