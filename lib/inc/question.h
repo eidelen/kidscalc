@@ -119,6 +119,24 @@ private:
     int m_givenResult;
 };
 
+class HardcodedQuestions : public Question
+{
+public:
+    /**
+     * Ctor for hardcoded questions
+     */
+    HardcodedQuestions(const std::string& question, const std::string& trueAnswer);
+
+    virtual ~HardcodedQuestions();
+
+    // Question interface
+    void parseAnswer(const std::string &answer) override;
+    bool isCorrect() const override;
+
+private:
+    std::string m_givenAnswerAsString;
+};
+
 
 
 /**

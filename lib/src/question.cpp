@@ -152,3 +152,37 @@ bool SubQuestion::isCorrect() const
 {
     return (m_trueResult == m_givenResult);
 }
+
+/********************************************/
+
+HardcodedQuestions::HardcodedQuestions(const std::string &question, const std::string &trueAnswer)
+{
+    m_trueResultAsString = trueAnswer;
+    m_questionAsString = question;
+}
+
+HardcodedQuestions::~HardcodedQuestions()
+{
+
+}
+
+void HardcodedQuestions::parseAnswer(const std::string &answer)
+{
+    m_answered = true;
+    m_givenAnswerAsString = answer;
+}
+
+bool HardcodedQuestions::isCorrect() const
+{
+
+    // both to lower case
+    std::string tres = m_trueResultAsString;
+    std::transform(m_trueResultAsString.begin(), m_trueResultAsString.end(), tres.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    std::string gres = m_givenAnswerAsString;
+    std::transform(m_givenAnswerAsString.begin(), m_givenAnswerAsString.end(), gres.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    return (tres == gres);
+}

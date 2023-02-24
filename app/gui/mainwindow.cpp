@@ -9,6 +9,35 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+
+class HCQuestionFactory : public QuestionFactory
+{
+public:
+    HCQuestionFactory(std::vector<std::pair<std::string,std::string>> questions): QuestionFactory(),
+        m_idx(0), m_questions(questions)
+    {
+    }
+
+    ~HCQuestionFactory()
+    {
+    }
+
+    std::shared_ptr<Question> createQuestion() override
+    {
+        if(m_idx >= m_questions.size())
+            m_idx = 0;
+
+        std::shared_ptr<HardcodedQuestions> q(new HardcodedQuestions(m_questions.at(m_idx).first, m_questions.at(m_idx).second));
+
+        m_idx++;
+        return q;
+    }
+
+    size_t m_idx;
+    std::vector<std::pair<std::string,std::string>> m_questions;
+};
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -30,7 +59,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->btnDel, &QPushButton::released, this, [this]{ deletePressed(); });
     connect(ui->btnGo, &QPushButton::released, this, [this]{ goPressed(); });
-    connect(ui->newGameBtn, &QPushButton::released, this, [this]{ newGamePressed(); });
+    //connect(ui->newGameBtn, &QPushButton::released, this, [this]{ newGamePressed(); });
+
+    GameParam::Params fakeParams;
+    newGame(fakeParams);
 }
 
 MainWindow::~MainWindow()
@@ -78,7 +110,7 @@ void MainWindow::goPressed()
     else
     {
         std::cout << " 🤨 " << "The correct answer is " << m_question->getRightAnswer() << std::endl << std::endl;
-        m_outputText.append(resText + "  🤨 (" + QString::fromStdString(m_question->getRightAnswer()) + ")\n");
+        m_outputText.append(resText + "  🤨 "); // + QString::fromStdString(m_question->getRightAnswer()) + ")\n");
     }
 
     ui->outputPanel->setText(m_outputText);
@@ -132,7 +164,7 @@ void MainWindow::showNextQuestion()
     m_question = m_Play->nextQuestion();
     if( m_question.get() != nullptr )
     {
-        QString qText = QString::fromStdString(m_question->toString()) + " = ";
+        QString qText = QString::fromStdString(m_question->toString()) ;
         ui->qLabel->setText(qText);
     }
     else
@@ -141,12 +173,13 @@ void MainWindow::showNextQuestion()
     }
 }
 
-void MainWindow::newGame(GameParam::Params params)
+void MainWindow::newGame(GameParam::Params /*params*/)
 {
     m_outputText = "";
     ui->outputPanel->setText(m_outputText);
     ui->resEdit->setText("");
 
+    /*
     if(params.type == GameParam::Addition)
     {
         m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, params.nbrRange}, params.nbrOperands));
@@ -154,17 +187,29 @@ void MainWindow::newGame(GameParam::Params params)
     else
     {
         m_QuestionFactory = std::shared_ptr<SubFactory>(new SubFactory({0, params.nbrRange}, params.nbrOperands));
-    }
+    }*/
 
-    m_Play = std::shared_ptr<Play>(new Play(params.nbrExercises, m_QuestionFactory));
+    std::vector<std::pair<std::string, std::string>> qs = {
+        {"ANIC: Der beste Kindergarten in Thun?", "Seefeld"},
+        {"SOHYI: Grosser Fels, welcher um die Erde kreist?", "Mond"},
+        {"AINA: Wie alt wird Carla?", "5"},
+        {"JARA: Das älteste Gebäude in Thun?", "Schloss"},
+        {"ELLA: Der beste Koch auf der Welt?", "Stefan"},
+        {"MIRO: Der beste Sport mit einem Ball?", "Fussball"},
+        {"CARLA: Ein guter Freund auf 4 Beinen?", "Herr Boggen"},
+        {"NARI: Ein schleimiger Fresshund?", "Juku"},
+        {"Ädu: Dritte Wurzel aus 1367631?", "111"}
+    };
+    m_QuestionFactory = std::shared_ptr<HCQuestionFactory>(new HCQuestionFactory(qs));
+
+    m_Play = std::shared_ptr<Play>(new Play(qs.size(), m_QuestionFactory));
 
     ui->progressBar->setRange(0, m_Play->getNumberOfQuestions());
 
-    if(params.imgDirPath != "None" && params.imgDirPath != "")
-    {
-        m_imgWidget->show();
-        m_imgWidget->resetImg(params.imgDirPath);
-    }
+
+    m_imgWidget->show();
+    m_imgWidget->resetImg("/Users/eidelen/Downloads/carla");
+
 
     showNextQuestion();
 
@@ -209,7 +254,7 @@ void MainWindow::updateProgress()
     double currentImgQuality = ((double)right)/m_Play->getNumberOfQuestions();
 
     // enhance slowely!
-    currentImgQuality = std::pow(currentImgQuality, 2);
+    currentImgQuality = std::pow(currentImgQuality, 3);
 
     m_imgWidget->updateQuality(currentImgQuality);
 }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>696</width>
+    <width>999</width>
     <height>618</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>20</x>
       <y>19</y>
-      <width>351</width>
+      <width>611</width>
       <height>554</height>
      </rect>
     </property>
@@ -387,7 +387,7 @@
    <widget class="QTextEdit" name="outputPanel">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>690</x>
       <y>20</y>
       <width>281</width>
       <height>511</height>
@@ -412,7 +412,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="newGameBtn">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>680</x>
       <y>540</y>
       <width>100</width>
       <height>40</height>
