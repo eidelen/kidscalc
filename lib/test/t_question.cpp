@@ -4,6 +4,28 @@
 #include "question.h"
 
 
+TEST(Question, BaseImpl)
+{
+    Question* q = new Question("How are you?", "Good");
+
+    ASSERT_FALSE(q->isAnswered());
+    ASSERT_FALSE(q->isCorrect());
+    ASSERT_STRCASEEQ(q->toString().c_str(), "How are you?");
+    ASSERT_STRCASEEQ(q->getRightAnswer().c_str(), "Good");
+
+    q->parseAnswer("Bad");
+
+    ASSERT_TRUE(q->isAnswered());
+    ASSERT_FALSE(q->isCorrect());
+
+    q->parseAnswer("Good");
+
+    ASSERT_TRUE(q->isAnswered());
+    ASSERT_TRUE(q->isCorrect());
+
+    delete q;
+}
+
 class MyQuestion: public Question
 {
 public:
@@ -139,6 +161,41 @@ TEST(SumQuestion, BasicUsage)
     ASSERT_TRUE(s1->isCorrect());
 
     ASSERT_STRCASEEQ(s1->getRightAnswer().c_str(), "15");
+
+    delete s1;
+}
+
+TEST(SumQuestion, InputForms)
+{
+    auto s1 = new SumQuestion({5, 5}, 3); // must be 15
+
+    s1->parseAnswer("   15");
+    ASSERT_TRUE(s1->isCorrect());
+
+    s1->parseAnswer("15    ");
+    ASSERT_TRUE(s1->isCorrect());
+
+    s1->parseAnswer("15 \n  ");
+    ASSERT_TRUE(s1->isCorrect());
+
+    delete s1;
+}
+
+
+TEST(SumQuestion, Negative)
+{
+    auto s1 = new SumQuestion({-5, -5}, 3); // must be -15
+
+    std::cout << "res" << s1->getRightAnswer() << std::endl;
+
+    s1->parseAnswer("   -15");
+    ASSERT_TRUE(s1->isCorrect());
+
+    s1->parseAnswer("-15    ");
+    ASSERT_TRUE(s1->isCorrect());
+
+    s1->parseAnswer("-15 \n  ");
+    ASSERT_TRUE(s1->isCorrect());
 
     delete s1;
 }

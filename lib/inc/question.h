@@ -37,6 +37,13 @@ class Question
 
 public:
 
+    /**
+     * Question ctor with given question and answer.
+     * @param question
+     * @param trueResult
+     */
+    Question(const std::string& question, const std::string& trueResult);
+
     Question();
     virtual ~Question();
 
@@ -44,12 +51,12 @@ public:
      * Parse and store the given anser.
      * @param answer as string.
      */
-    virtual void parseAnswer(const std::string& answer) = 0;
+    virtual void parseAnswer(const std::string& answer);
 
     /**
      * Was qustion solved correctly.
      */
-    virtual bool isCorrect() const = 0;
+    virtual bool isCorrect() const;
 
     /**
      * Was the question answered.
@@ -73,35 +80,41 @@ protected:
     bool m_answered;
     std::string m_questionAsString;
     std::string m_trueResultAsString;
+    std::string m_givenResultAsString;
 };
 
-
-class SumQuestion : public Question
+class NumericQuestion : public Question
 {
 public:
     /**
-     * Ctor for summation question
+     * Ctor for numeric question
+     */
+    NumericQuestion();
+
+    virtual ~NumericQuestion();
+
+    virtual void parseAnswer(const std::string &answer) override;
+};
+
+
+class SumQuestion : public NumericQuestion
+{
+public:
+    /**
+     * Ctor for random summation question
      * @param numberRange The range in which the used numbers are
      * @param length How many number are summed
      */
     SumQuestion(std::pair<int,int> numberRange, size_t length);
 
     virtual ~SumQuestion();
-
-    // Question interface
-    void parseAnswer(const std::string &answer) override;
-    bool isCorrect() const override;
-
-private:
-    int m_trueResult;
-    int m_givenResult;
 };
 
 class SubQuestion : public Question
 {
 public:
     /**
-     * Ctor for subtraction question
+     * Ctor for random subtraction question
      * @param numberRange The range in which the used numbers are
      * @param length How many number are summed
      * @param canBeNegative If true, result can be signed. Otherwise result will be positive.
@@ -109,14 +122,6 @@ public:
     SubQuestion(std::pair<int,int> numberRange, size_t length, bool canBeNegative);
 
     virtual ~SubQuestion();
-
-    // Question interface
-    void parseAnswer(const std::string &answer) override;
-    bool isCorrect() const override;
-
-private:
-    int m_trueResult;
-    int m_givenResult;
 };
 
 

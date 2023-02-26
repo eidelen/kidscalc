@@ -26,13 +26,28 @@
 
 #include "question.h"
 
-Question::Question(): m_answered(false), m_questionAsString(""), m_trueResultAsString("")
+Question::Question(const std::string &question, const std::string &trueResult) :
+    m_answered(false), m_questionAsString(question), m_trueResultAsString(trueResult), m_givenResultAsString("")
+{
+}
+
+Question::Question(): m_answered(false), m_questionAsString(""), m_trueResultAsString(""), m_givenResultAsString("")
 {
 }
 
 Question::~Question()
 {
+}
 
+void Question::parseAnswer(const std::string &answer)
+{
+    m_givenResultAsString = answer;
+    m_answered = true;
+}
+
+bool Question::isCorrect() const
+{
+    return m_trueResultAsString.compare(m_givenResultAsString) == 0;
 }
 
 bool Question::isAnswered() const
@@ -63,14 +78,14 @@ int Question::getRandomIntegerInRange(std::pair<int, int> numberRange) const
 
 SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
 {
-    m_trueResult = 0;
+    int trueResult = 0;
     m_questionAsString = "";
 
     for(size_t i = 0; i < length; i++)
     {
         int nextOp = getRandomIntegerInRange(numberRange);
 
-        m_trueResult += nextOp;
+        trueResult += nextOp;
 
         m_questionAsString = m_questionAsString + std::to_string(nextOp);
 
@@ -80,7 +95,7 @@ SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
         }
     }
 
-    m_trueResultAsString = std::to_string(m_trueResult);
+    m_trueResultAsString = std::to_string(trueResult);
 }
 
 SumQuestion::~SumQuestion()
@@ -88,16 +103,6 @@ SumQuestion::~SumQuestion()
 
 }
 
-void SumQuestion::parseAnswer(const std::string &answer)
-{
-    m_answered = true;
-    m_givenResult = std::stoi(answer);
-}
-
-bool SumQuestion::isCorrect() const
-{
-    return (m_trueResult == m_givenResult);
-}
 
 /********************************************/
 
@@ -107,7 +112,7 @@ SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool ca
 
     while(tryAnother)
     {
-        m_trueResult = 0;
+        int trueResult = 0;
         m_questionAsString = "";
 
         for(size_t i = 0; i < length; i++)
@@ -117,11 +122,11 @@ SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool ca
             if(i == 0)
             {
                 // first is chosen positive
-                m_trueResult = nextOp;
+                trueResult = nextOp;
             }
             else
             {
-                m_trueResult -= nextOp;
+                trueResult -= nextOp;
             }
 
             m_questionAsString = m_questionAsString + std::to_string(nextOp);
@@ -132,8 +137,8 @@ SubQuestion::SubQuestion(std::pair<int, int> numberRange, size_t length, bool ca
             }
         }
 
-        m_trueResultAsString = std::to_string(m_trueResult);
-        tryAnother = (!canBeNegative) && (m_trueResult < 0);
+        m_trueResultAsString = std::to_string(trueResult);
+        tryAnother = (!canBeNegative) && (trueResult < 0);
     }
 }
 
@@ -142,13 +147,24 @@ SubQuestion::~SubQuestion()
 
 }
 
-void SubQuestion::parseAnswer(const std::string &answer)
+/********************************************/
+
+NumericQuestion::NumericQuestion()
 {
-    m_answered = true;
-    m_givenResult = std::stoi(answer);
 }
 
-bool SubQuestion::isCorrect() const
+NumericQuestion::~NumericQuestion()
 {
-    return (m_trueResult == m_givenResult);
+}
+
+void NumericQuestion::parseAnswer(const std::string &answer)
+{
+    m_answered = true;
+    m_givenResultAsString = answer;
+
+    // remove all non alphanumeric but not "-" and "+"
+    m_givenResultAsString.erase(std::remove_if(m_givenResultAsString.begin(), m_givenResultAsString.end(),  []( auto const& c ) -> bool
+    {
+        return !(std::isalnum(c) || c == '+' || c == '-');
+    } ), m_givenResultAsString.end());
 }
