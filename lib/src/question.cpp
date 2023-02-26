@@ -23,6 +23,7 @@
 
 #include <random>
 #include <iostream>
+#include <algorithm>
 
 #include "question.h"
 
