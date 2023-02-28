@@ -24,6 +24,7 @@
 #ifndef FACTORIES_H
 #define FACTORIES_H
 
+#include <vector>
 #include "question.h"
 
 /**
@@ -70,6 +71,23 @@ public:
 
     std::pair<int,int> m_numberRange;
     size_t m_length;
+};
+
+/**
+ * @brief The CSVFactory class reads a CSV file (question,answer).
+ */
+class CSVFactory: public QuestionFactory
+{
+public:
+    CSVFactory(const std::string& filePath);
+
+    ~CSVFactory();
+
+    std::shared_ptr<Question> createQuestion() override;
+
+
+    using QEntry = std::pair<std::string, std::string>;
+    std::vector<QEntry> m_questions;
 };
 
 #endif // FACTORIES_H

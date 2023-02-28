@@ -17,4 +17,4 @@ jobs:
     - name: make
       run: cd build && make
     - name: Run Test
-      run: cd build/lib && ./runKCLibTests
+      run: ./build/lib/runKCLibTests

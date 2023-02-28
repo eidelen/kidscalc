@@ -21,6 +21,10 @@
 **
 *****************************************************************************/
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 #include "factories.h"
 
 
@@ -53,4 +57,35 @@ SubFactory::~SubFactory()
 std::shared_ptr<Question> SubFactory::createQuestion()
 {
     return std::shared_ptr<Question>(new SubQuestion(m_numberRange, m_length, false) );
+}
+
+
+/***********************************************/
+
+
+CSVFactory::CSVFactory(const std::string &filePath)
+{
+    std::ifstream csvFile(filePath);
+
+    std::string line;
+    while (std::getline(csvFile, line))
+    {
+        size_t cPos = line.find(",");
+        if(cPos != std::string::npos)
+        {
+            std::string q = line.substr(0, cPos);
+            std::string a = line.substr(cPos + 1);
+            m_questions.emplace_back(q, a);
+        }
+    }
+}
+
+CSVFactory::~CSVFactory()
+{
+
+}
+
+std::shared_ptr<Question> CSVFactory::createQuestion()
+{
+
 }
