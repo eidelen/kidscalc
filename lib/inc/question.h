@@ -125,19 +125,4 @@ public:
 };
 
 
-
-/**
- * @brief Factory for calculation questions
- */
-class QuestionFactory
-{
-public:
-
-    /**
-     * Creates questions. Question should be crated randomly.
-     * @return Question
-     */
-    virtual std::shared_ptr<Question> createQuestion() = 0;
-};
-
 #endif // QUESTION_H

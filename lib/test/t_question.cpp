@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <gtest/gtest.h>
 #include "question.h"
+#include "factories.h"
 
 
 TEST(Question, BaseImpl)
@@ -269,3 +270,6 @@ TEST(SubQuestion, HeavyNeg)
         delete s;
     }
 }
+
+/*****************************************************************/
+

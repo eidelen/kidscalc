@@ -3,14 +3,14 @@
 #include "play.h"
 #include "question.h"
 
-class SumFactory : public QuestionFactory
+class MySumFactory : public QuestionFactory
 {
 public:
-    SumFactory(): QuestionFactory()
+    MySumFactory(): QuestionFactory()
     {
     }
 
-    ~SumFactory()
+    ~MySumFactory()
     {
     }
 
@@ -23,7 +23,7 @@ public:
 
 TEST(Play, GetQuestions)
 {
-    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new SumFactory()));
+    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new MySumFactory()));
 
     {
         auto[right, wrong, answered, unanswered, successrate] = p->getStat();
@@ -61,7 +61,7 @@ TEST(Play, GetQuestions)
 
 TEST(Play, AnswerQuestions)
 {
-    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new SumFactory()));
+    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new MySumFactory()));
 
     std::shared_ptr<Question> q1 = p->nextQuestion();
     std::shared_ptr<Question> q2 = p->nextQuestion();
@@ -108,7 +108,7 @@ TEST(Play, AnswerQuestions)
 
 TEST(Play, GetTotalNbrQuestions)
 {
-    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new SumFactory()));
+    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new MySumFactory()));
     ASSERT_EQ(p->getNumberOfQuestions(), 3);
     delete p;
 }

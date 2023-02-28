@@ -27,48 +27,46 @@
 #include "question.h"
 
 /**
- * @brief The SumFactory class is the factory for simple addition questions.
+ * @brief Factory for calculation questions
+ */
+class QuestionFactory
+{
+public:
+
+    /**
+     * Creates questions. Question should be crated randomly.
+     * @return Question
+     */
+    virtual std::shared_ptr<Question> createQuestion() = 0;
+};
+
+/**
+ * @brief The SumFactory class is the factory for simple random addition questions.
  */
 class SumFactory : public QuestionFactory
 {
 public:
-    SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
-        m_numberRange(numberRange), m_length(length)
-    {
-    }
+    SumFactory(std::pair<int,int> numberRange, size_t length);
 
-    ~SumFactory()
-    {
-    }
+    ~SumFactory();
 
-    std::shared_ptr<Question> createQuestion() override
-    {
-        return std::shared_ptr<Question>(new SumQuestion(m_numberRange, m_length) );
-    }
+    std::shared_ptr<Question> createQuestion() override;
 
     std::pair<int,int> m_numberRange;
     size_t m_length;
 };
 
 /**
- * @brief The SubFactory class is the factory for simple subtractiuon questions.
+ * @brief The SubFactory class is the factory for simple random subtractiuon questions.
  */
 class SubFactory : public QuestionFactory
 {
 public:
-    SubFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
-        m_numberRange(numberRange), m_length(length)
-    {
-    }
+    SubFactory(std::pair<int,int> numberRange, size_t length);
 
-    ~SubFactory()
-    {
-    }
+    ~SubFactory();
 
-    std::shared_ptr<Question> createQuestion() override
-    {
-        return std::shared_ptr<Question>(new SubQuestion(m_numberRange, m_length, false) );
-    }
+    std::shared_ptr<Question> createQuestion() override;
 
     std::pair<int,int> m_numberRange;
     size_t m_length;

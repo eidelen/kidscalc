@@ -21,60 +21,36 @@
 **
 *****************************************************************************/
 
-#ifndef PLAY_H
-#define PLAY_H
-
-#include <memory>
-#include <vector>
-
-#include "question.h"
 #include "factories.h"
 
-/**
- * @brief Calculation play consisting of Questions.
- */
-class Play
+
+SumFactory::SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
+    m_numberRange(numberRange), m_length(length)
 {
+}
 
-public:
+SumFactory::~SumFactory()
+{
+}
 
-    /**
-     * Constructs a play
-     * @param nbrOfQuestions Number of questions
-     * @param qFactory Questions factory.
-     */
-    Play(size_t nbrOfQuestions, std::shared_ptr<QuestionFactory> qFactory);
-
-    /**
-     * Destructor
-     */
-    virtual ~Play();
-
-    /**
-     * Returns the next question.
-     * @return Next question. When no one left, nullptr.
-     */
-    std::shared_ptr<Question> nextQuestion();
-
-    /**
-     * Get statistics of current play.
-     * @return nbr right, nbr wrong, nbr answered, nbr unanswered, success rate
-     */
-    std::tuple<size_t, size_t, size_t, size_t, double> getStat() const;
-
-    /**
-     * Get the number of questions in this play.
-     * @return
-     */
-    size_t getNumberOfQuestions() const;
+std::shared_ptr<Question> SumFactory::createQuestion()
+{
+    return std::shared_ptr<Question>(new SumQuestion(m_numberRange, m_length) );
+}
 
 
-protected:
+/***********************************************/
 
-    size_t m_nbrOfQuestions;
-    size_t m_nbrOfQuestionsAlreadyAsked;
-    std::shared_ptr<QuestionFactory> m_qFactory;
-    std::vector<std::shared_ptr<Question>> m_questions;
-};
+SubFactory::SubFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
+    m_numberRange(numberRange), m_length(length)
+{
+}
 
-#endif // PLAY_H
+SubFactory::~SubFactory()
+{
+}
+
+std::shared_ptr<Question> SubFactory::createQuestion()
+{
+    return std::shared_ptr<Question>(new SubQuestion(m_numberRange, m_length, false) );
+}
