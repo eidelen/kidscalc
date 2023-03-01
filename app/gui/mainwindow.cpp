@@ -68,7 +68,7 @@ void MainWindow::goPressed()
 
     m_question->parseAnswer(answer);
 
-    QString resText = QString::fromStdString(m_question->toString()) + " = " + ui->resEdit->text();
+    QString resText = QString::fromStdString(m_question->getQuestion()) + " = " + ui->resEdit->text();
 
     if( m_question->isCorrect() )
     {
@@ -132,7 +132,7 @@ void MainWindow::showNextQuestion()
     m_question = m_Play->nextQuestion();
     if( m_question.get() != nullptr )
     {
-        QString qText = QString::fromStdString(m_question->toString()) + " = ";
+        QString qText = QString::fromStdString(m_question->getQuestion()) + " = ";
         ui->qLabel->setText(qText);
     }
     else

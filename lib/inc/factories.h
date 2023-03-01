@@ -34,11 +34,19 @@ class QuestionFactory
 {
 public:
 
+    QuestionFactory();
+
     /**
      * Creates questions. Question should be crated randomly.
      * @return Question
      */
     virtual std::shared_ptr<Question> createQuestion() = 0;
+
+    /**
+     * Get the total number of questions.
+     * @return
+     */
+    virtual size_t getTotalNumberOfQuestions() const;
 };
 
 /**
@@ -85,9 +93,11 @@ public:
 
     std::shared_ptr<Question> createQuestion() override;
 
+    virtual size_t getTotalNumberOfQuestions() const override;
 
     using QEntry = std::pair<std::string, std::string>;
     std::vector<QEntry> m_questions;
+    size_t m_qIdx;
 };
 
 #endif // FACTORIES_H

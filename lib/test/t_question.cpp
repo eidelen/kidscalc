@@ -11,7 +11,7 @@ TEST(Question, BaseImpl)
 
     ASSERT_FALSE(q->isAnswered());
     ASSERT_FALSE(q->isCorrect());
-    ASSERT_STRCASEEQ(q->toString().c_str(), "How are you?");
+    ASSERT_STRCASEEQ(q->getQuestion().c_str(), "How are you?");
     ASSERT_STRCASEEQ(q->getRightAnswer().c_str(), "Good");
 
     q->parseAnswer("Bad");
@@ -68,7 +68,7 @@ TEST(Question, BasicInterface)
 
     ASSERT_FALSE(q->isAnswered());
     ASSERT_FALSE(q->isCorrect());
-    ASSERT_STRCASEEQ(q->toString().c_str(), "1200 + 34");
+    ASSERT_STRCASEEQ(q->getQuestion().c_str(), "1200 + 34");
     ASSERT_STRCASEEQ(q->getRightAnswer().c_str(), "1234");
 
     q->parseAnswer("9999");
@@ -130,7 +130,7 @@ TEST(QuestionFactory, BasicInterface)
 
     ASSERT_FALSE(q->isAnswered());
     ASSERT_FALSE(q->isCorrect());
-    ASSERT_STRCASEEQ(q->toString().c_str(), "1200 + 34");
+    ASSERT_STRCASEEQ(q->getQuestion().c_str(), "1200 + 34");
 
     q->parseAnswer("9999");
 
@@ -154,7 +154,7 @@ TEST(SumQuestion, BasicUsage)
     ASSERT_FALSE(s1->isCorrect());
     ASSERT_FALSE(s1->isAnswered());
 
-    ASSERT_STRCASEEQ(s1->toString().c_str(), "5 + 5 + 5");
+    ASSERT_STRCASEEQ(s1->getQuestion().c_str(), "5 + 5 + 5");
 
     s1->parseAnswer("15");
 
@@ -207,7 +207,7 @@ TEST(SumQuestion, Heavy)
     {
         auto s = new SumQuestion({0, 100}, i);
 
-        std::string qstr = s->toString();
+        std::string qstr = s->getQuestion();
 
         ASSERT_EQ(i-1, std::count(qstr.begin(), qstr.end(), '+'));
 
@@ -224,7 +224,7 @@ TEST(SubQuestion, BasicUsage)
     ASSERT_FALSE(s1->isCorrect());
     ASSERT_FALSE(s1->isAnswered());
 
-    ASSERT_STRCASEEQ(s1->toString().c_str(), "5 - 5 - 5");
+    ASSERT_STRCASEEQ(s1->getQuestion().c_str(), "5 - 5 - 5");
 
     s1->parseAnswer("-6");
 
@@ -247,7 +247,7 @@ TEST(SubQuestion, HeavyPos)
     {
         auto s = new SubQuestion({0, 100}, 3, false);
 
-        std::string qstr = s->toString();
+        std::string qstr = s->getQuestion();
 
         ASSERT_EQ(2, std::count(qstr.begin(), qstr.end(), '-'));
 
@@ -263,7 +263,7 @@ TEST(SubQuestion, HeavyNeg)
     {
         auto s = new SubQuestion({0, 100}, 3, true);
 
-        std::string qstr = s->toString();
+        std::string qstr = s->getQuestion();
 
         ASSERT_EQ(2, std::count(qstr.begin(), qstr.end(), '-'));
 

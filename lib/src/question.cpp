@@ -56,7 +56,7 @@ bool Question::isAnswered() const
     return m_answered;
 }
 
-std::string Question::toString() const
+std::string Question::getQuestion() const
 {
     return m_questionAsString;
 }

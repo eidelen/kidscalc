@@ -67,7 +67,7 @@ public:
      * Return string representation of question.
      * @return String
      */
-    std::string toString() const;
+    std::string getQuestion() const;
 
     /**
      * Get the right answer as string.

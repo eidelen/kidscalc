@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         std::shared_ptr<Question> q = p->nextQuestion();
         while(q.get() != nullptr)
         {
-            std::cout << " " << q->toString() << " = ";
+            std::cout << " " << q->getQuestion() << " = ";
 
             std::string answer = "";
             std::cin >> answer;

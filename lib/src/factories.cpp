@@ -24,9 +24,21 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits>
 
 #include "factories.h"
 
+QuestionFactory::QuestionFactory()
+{
+
+}
+
+size_t QuestionFactory::getTotalNumberOfQuestions() const
+{
+    return std::numeric_limits<size_t>::max();
+}
+
+/***********************************************/
 
 SumFactory::SumFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
     m_numberRange(numberRange), m_length(length)
@@ -63,7 +75,7 @@ std::shared_ptr<Question> SubFactory::createQuestion()
 /***********************************************/
 
 
-CSVFactory::CSVFactory(const std::string &filePath)
+CSVFactory::CSVFactory(const std::string &filePath): m_qIdx(0)
 {
     std::ifstream csvFile(filePath);
 
@@ -87,5 +99,14 @@ CSVFactory::~CSVFactory()
 
 std::shared_ptr<Question> CSVFactory::createQuestion()
 {
+    if(m_qIdx >= m_questions.size())
+        return std::shared_ptr<Question>(nullptr);
 
+    auto [question, answer] = m_questions.at(m_qIdx++);
+            return std::shared_ptr<Question>(new Question(question, answer));
+}
+
+size_t CSVFactory::getTotalNumberOfQuestions() const
+{
+    return m_questions.size();
 }
