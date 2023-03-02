@@ -33,9 +33,9 @@ QuestionFactory::QuestionFactory()
 
 }
 
-size_t QuestionFactory::getTotalNumberOfQuestions() const
+std::pair<bool,size_t> QuestionFactory::getTotalNumberOfQuestions() const
 {
-    return std::numeric_limits<size_t>::max();
+    return {false, std::numeric_limits<size_t>::max()};
 }
 
 /***********************************************/
@@ -106,7 +106,7 @@ std::shared_ptr<Question> CSVFactory::createQuestion()
             return std::shared_ptr<Question>(new Question(question, answer));
 }
 
-size_t CSVFactory::getTotalNumberOfQuestions() const
+std::pair<bool,size_t> CSVFactory::getTotalNumberOfQuestions() const
 {
-    return m_questions.size();
+    return {true, m_questions.size()};
 }

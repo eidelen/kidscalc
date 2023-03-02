@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include "play.h"
 #include "question.h"
+#include "factories.h"
 
 class MySumFactory : public QuestionFactory
 {
@@ -110,5 +111,12 @@ TEST(Play, GetTotalNbrQuestions)
 {
     auto p = new Play(3, std::shared_ptr<QuestionFactory>(new MySumFactory()));
     ASSERT_EQ(p->getNumberOfQuestions(), 3);
+    delete p;
+}
+
+TEST(Play, OverwriteNbrOfQuestionByFactory)
+{
+    auto p = new Play(3, std::shared_ptr<QuestionFactory>(new CSVFactory("lib/test/test.csv"))); // has only 2 questions
+    ASSERT_EQ(p->getNumberOfQuestions(), 2);
     delete p;
 }

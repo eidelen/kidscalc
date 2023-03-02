@@ -12,7 +12,8 @@ TEST(CSVFactory, Functionality)
 {
     std::shared_ptr<CSVFactory> f = std::shared_ptr<CSVFactory>(new CSVFactory("lib/test/test.csv"));
 
-    ASSERT_EQ(f->getTotalNumberOfQuestions(), 2);
+    ASSERT_TRUE(f->getTotalNumberOfQuestions().first);
+    ASSERT_EQ(f->getTotalNumberOfQuestions().second, 2);
 
     auto q1 = f->createQuestion();
     ASSERT_EQ(q1->getQuestion(), "q1");

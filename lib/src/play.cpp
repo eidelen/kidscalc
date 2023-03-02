@@ -26,6 +26,10 @@
 Play::Play(size_t nbrOfQuestions, std::shared_ptr<QuestionFactory> qFactory)
     : m_nbrOfQuestions(nbrOfQuestions), m_nbrOfQuestionsAlreadyAsked(0), m_qFactory(qFactory)
 {
+    // if the number of questions are limited by the factory, overwrite m_nbrOfQuestions
+    auto [limited, nbrQuestions] = qFactory->getTotalNumberOfQuestions();
+    if(limited)
+            m_nbrOfQuestions = nbrQuestions;
 }
 
 Play::~Play()
