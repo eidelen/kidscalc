@@ -103,7 +103,7 @@ std::shared_ptr<Question> CSVFactory::createQuestion()
         return std::shared_ptr<Question>(nullptr);
 
     auto [question, answer] = m_questions.at(m_qIdx++);
-            return std::shared_ptr<Question>(new Question(question, answer));
+    return std::shared_ptr<Question>(new Question(question, answer));
 }
 
 std::pair<bool,size_t> CSVFactory::getTotalNumberOfQuestions() const

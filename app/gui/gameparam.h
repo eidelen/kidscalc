@@ -19,7 +19,8 @@ public:
     enum OpType
     {
         Addition,
-        Subtraction
+        Subtraction,
+        CSV
     };
 
     struct Params
@@ -29,6 +30,7 @@ public:
         size_t nbrExercises;
         int nbrRange;
         QString imgDirPath;
+        QString csvFilePath;
     };
 
     Params getGameParams() const;
@@ -38,6 +40,7 @@ public:
 
 private slots:
   void imgPathPressed();
+  void csvPathPressed();
 
 private:
     Ui::GameParam *ui;

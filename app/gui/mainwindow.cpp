@@ -151,9 +151,13 @@ void MainWindow::newGame(GameParam::Params params)
     {
         m_QuestionFactory = std::shared_ptr<SumFactory>(new SumFactory({0, params.nbrRange}, params.nbrOperands));
     }
-    else
+    else if(params.type == GameParam::Subtraction)
     {
         m_QuestionFactory = std::shared_ptr<SubFactory>(new SubFactory({0, params.nbrRange}, params.nbrOperands));
+    }
+    else
+    {
+        m_QuestionFactory = std::shared_ptr<CSVFactory>(new CSVFactory(params.csvFilePath.toStdString()));
     }
 
     m_Play = std::shared_ptr<Play>(new Play(params.nbrExercises, m_QuestionFactory));

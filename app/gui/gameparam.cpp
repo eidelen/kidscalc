@@ -18,6 +18,7 @@ GameParam::GameParam(QWidget *parent) :
 
     m_types.push_back({"Addition", OpType::Addition});
     m_types.push_back({"Subtraction", OpType::Subtraction});
+    m_types.push_back({"CSV", OpType::CSV});
 
     // add operations to dropdown
     for(const auto& [typeQStr, typeId] : m_types)
@@ -26,6 +27,7 @@ GameParam::GameParam(QWidget *parent) :
     loadParams();
 
     connect(ui->btnImgPath, &QPushButton::released, this, [this]{ imgPathPressed(); });
+    connect(ui->btnCSV, &QPushButton::released, this, [this]{ csvPathPressed(); });
 }
 
 GameParam::~GameParam()
@@ -48,6 +50,7 @@ GameParam::Params GameParam::getGameParams() const
     retParams.nbrExercises = ui->nbrExercises->value();
     retParams.nbrRange = ui->nbrRangeMax->value();
     retParams.imgDirPath = ui->imgPath->text();
+    retParams.csvFilePath = ui->csvPathLabel->text();
 
     return retParams;
 }
@@ -69,6 +72,7 @@ void GameParam::storeParams() const
     stream.writeTextElement("nbrExercises", QString::number(ui->nbrExercises->value()));
     stream.writeTextElement("nbrRange", QString::number(ui->nbrRangeMax->value()));
     stream.writeTextElement("imgDirPath", ui->imgPath->text());
+    stream.writeTextElement("csvFilePath", ui->csvPathLabel->text());
 
     stream.writeEndElement();
 
@@ -119,6 +123,10 @@ void GameParam::loadParams()
             {
                 ui->imgPath->setText(xml.readElementText());
             }
+            else if(tagName == "csvFilePath")
+            {
+                ui->csvPathLabel->setText(xml.readElementText());
+            }
         }
     }
 
@@ -135,4 +143,12 @@ void GameParam::imgPathPressed()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Image Directory"),
                                                     "", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     ui->imgPath->setText(dir);
+}
+
+void GameParam::csvPathPressed()
+{
+    std::cout << "CSV Button pressed" << std::endl;
+
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open CSV File"), "");
+    ui->csvPathLabel->setText(filePath);
 }
