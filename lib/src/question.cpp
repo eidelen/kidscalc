@@ -89,10 +89,10 @@ void NumericQuestion::parseAnswer(const std::string &answer)
     m_answered = true;
     m_givenResultAsString = answer;
 
-    // remove all non alphanumeric but not "-" and "+"
+    // remove all non alphanumeric but not "-"
     m_givenResultAsString.erase(std::remove_if(m_givenResultAsString.begin(), m_givenResultAsString.end(),  []( auto const& c ) -> bool
     {
-        return !(std::isalnum(c) || c == '+' || c == '-');
+        return !(std::isalnum(c) || c == '-');
     } ), m_givenResultAsString.end());
 }
 

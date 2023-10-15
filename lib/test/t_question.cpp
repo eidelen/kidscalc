@@ -147,6 +147,32 @@ TEST(QuestionFactory, BasicInterface)
 
 /*****************************************************************/
 
+class MyNumQuest : public NumericQuestion
+{
+public:
+    MyNumQuest() : NumericQuestion(){}
+    virtual ~MyNumQuest(){}
+    std::string getParsedResult(){return m_givenResultAsString;}
+};
+
+TEST(NumericQuestion, Parse)
+{
+    auto n1 = new MyNumQuest();
+    n1->parseAnswer("5");
+    ASSERT_STRCASEEQ(n1->getParsedResult().c_str(), "5");
+    n1->parseAnswer("555522");
+    ASSERT_STRCASEEQ(n1->getParsedResult().c_str(), "555522");
+    n1->parseAnswer("-34");
+    ASSERT_STRCASEEQ(n1->getParsedResult().c_str(), "-34");
+    n1->parseAnswer("-  34");
+    ASSERT_STRCASEEQ(n1->getParsedResult().c_str(), "-34");
+    n1->parseAnswer("+7");
+    ASSERT_STRCASEEQ(n1->getParsedResult().c_str(), "7");
+    delete n1;
+}
+
+/*******************************************/
+
 TEST(SumQuestion, BasicUsage)
 {
     auto s1 = new SumQuestion({5, 5}, 3); // must be 15
