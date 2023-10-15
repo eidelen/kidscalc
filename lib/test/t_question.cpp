@@ -273,3 +273,53 @@ TEST(SubQuestion, HeavyNeg)
 
 /*****************************************************************/
 
+TEST(MulQuestion, BasicUsage)
+{
+    auto s1 = new MultiplyQuestion({5, 5}, 2); // must be 25
+
+    ASSERT_FALSE(s1->isCorrect());
+    ASSERT_FALSE(s1->isAnswered());
+
+    ASSERT_STRCASEEQ(s1->getQuestion().c_str(), "5 * 5");
+
+    s1->parseAnswer("25");
+
+    ASSERT_TRUE(s1->isAnswered());
+    ASSERT_TRUE(s1->isCorrect());
+
+    ASSERT_STRCASEEQ(s1->getRightAnswer().c_str(), "25");
+
+    delete s1;
+}
+
+TEST(MulQuestion, InputForms)
+{
+    auto s1 = new MultiplyQuestion({5, 5}, 2); // must be 25
+
+    s1->parseAnswer("   25");
+    ASSERT_TRUE(s1->isCorrect());
+
+    s1->parseAnswer("25    ");
+    ASSERT_TRUE(s1->isCorrect());
+
+    s1->parseAnswer("25 \n  ");
+    ASSERT_TRUE(s1->isCorrect());
+
+    delete s1;
+}
+
+
+TEST(MulQuestion, Heavy)
+{
+    for(size_t i = 2; i < 100; i++ )
+    {
+        auto s = new MultiplyQuestion({0, 100}, i);
+
+        std::string qstr = s->getQuestion();
+
+        ASSERT_EQ(i-1, std::count(qstr.begin(), qstr.end(), '*'));
+
+        delete s;
+    }
+}
+

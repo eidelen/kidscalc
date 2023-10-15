@@ -110,7 +110,7 @@ public:
     virtual ~SumQuestion();
 };
 
-class SubQuestion : public Question
+class SubQuestion : public NumericQuestion
 {
 public:
     /**
@@ -122,6 +122,19 @@ public:
     SubQuestion(std::pair<int,int> numberRange, size_t length, bool canBeNegative);
 
     virtual ~SubQuestion();
+};
+
+class MultiplyQuestion : public NumericQuestion
+{
+public:
+    /**
+     * Ctor for random multiply question
+     * @param numberRange The range in which the used numbers are
+     * @param length How many number are summed
+     */
+    MultiplyQuestion(std::pair<int,int> numberRange, size_t length);
+
+    virtual ~MultiplyQuestion();
 };
 
 

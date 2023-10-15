@@ -74,6 +74,28 @@ int Question::getRandomIntegerInRange(std::pair<int, int> numberRange) const
     return dist(gen);
 }
 
+/************************************************/
+
+NumericQuestion::NumericQuestion()
+{
+}
+
+NumericQuestion::~NumericQuestion()
+{
+}
+
+void NumericQuestion::parseAnswer(const std::string &answer)
+{
+    m_answered = true;
+    m_givenResultAsString = answer;
+
+    // remove all non alphanumeric but not "-" and "+"
+    m_givenResultAsString.erase(std::remove_if(m_givenResultAsString.begin(), m_givenResultAsString.end(),  []( auto const& c ) -> bool
+    {
+        return !(std::isalnum(c) || c == '+' || c == '-');
+    } ), m_givenResultAsString.end());
+}
+
 
 /*********************** SumQuestion *********************************/
 
@@ -103,7 +125,6 @@ SumQuestion::~SumQuestion()
 {
 
 }
-
 
 /********************************************/
 
@@ -148,24 +169,33 @@ SubQuestion::~SubQuestion()
 
 }
 
-/********************************************/
+/*********************** MultiplyQuestion *********************************/
 
-NumericQuestion::NumericQuestion()
+MultiplyQuestion::MultiplyQuestion(std::pair<int, int> numberRange, size_t length)
 {
-}
+    int trueResult = 1;
+    m_questionAsString = "";
 
-NumericQuestion::~NumericQuestion()
-{
-}
-
-void NumericQuestion::parseAnswer(const std::string &answer)
-{
-    m_answered = true;
-    m_givenResultAsString = answer;
-
-    // remove all non alphanumeric but not "-" and "+"
-    m_givenResultAsString.erase(std::remove_if(m_givenResultAsString.begin(), m_givenResultAsString.end(),  []( auto const& c ) -> bool
+    for(size_t i = 0; i < length; i++)
     {
-        return !(std::isalnum(c) || c == '+' || c == '-');
-    } ), m_givenResultAsString.end());
+        int nextOp = getRandomIntegerInRange(numberRange);
+
+        trueResult *= nextOp;
+
+        m_questionAsString = m_questionAsString + std::to_string(nextOp);
+
+        if( i+1 < length )
+        {
+            m_questionAsString = m_questionAsString + " * ";
+        }
+    }
+
+    m_trueResultAsString = std::to_string(trueResult);
 }
+
+MultiplyQuestion::~MultiplyQuestion()
+{
+
+}
+
+
