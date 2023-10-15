@@ -308,7 +308,6 @@ TEST(MulQuestion, InputForms)
     delete s1;
 }
 
-
 TEST(MulQuestion, Heavy)
 {
     for(size_t i = 2; i < 100; i++ )

@@ -18,6 +18,7 @@ GameParam::GameParam(QWidget *parent) :
 
     m_types.push_back({"Addition", OpType::Addition});
     m_types.push_back({"Subtraction", OpType::Subtraction});
+    m_types.push_back({"Multiply", OpType::Multiply});
     m_types.push_back({"CSV", OpType::CSV});
 
     // add operations to dropdown

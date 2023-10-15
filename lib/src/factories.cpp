@@ -71,6 +71,21 @@ std::shared_ptr<Question> SubFactory::createQuestion()
     return std::shared_ptr<Question>(new SubQuestion(m_numberRange, m_length, false) );
 }
 
+/***********************************************/
+
+MulFactory::MulFactory(std::pair<int,int> numberRange, size_t length): QuestionFactory(),
+    m_numberRange(numberRange), m_length(length)
+{
+}
+
+MulFactory::~MulFactory()
+{
+}
+
+std::shared_ptr<Question> MulFactory::createQuestion()
+{
+    return std::shared_ptr<Question>(new MultiplyQuestion(m_numberRange, m_length) );
+}
 
 /***********************************************/
 

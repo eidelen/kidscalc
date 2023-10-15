@@ -82,6 +82,22 @@ public:
 };
 
 /**
+ * @brief The MultiplyFactory class is the factory for simple random multiply questions.
+ */
+class MulFactory : public QuestionFactory
+{
+public:
+    MulFactory(std::pair<int,int> numberRange, size_t length);
+
+    ~MulFactory();
+
+    std::shared_ptr<Question> createQuestion() override;
+
+    std::pair<int,int> m_numberRange;
+    size_t m_length;
+};
+
+/**
  * @brief The CSVFactory class reads a CSV file (question,answer).
  */
 class CSVFactory: public QuestionFactory

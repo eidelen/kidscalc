@@ -155,6 +155,10 @@ void MainWindow::newGame(GameParam::Params params)
     {
         m_QuestionFactory = std::shared_ptr<SubFactory>(new SubFactory({0, params.nbrRange}, params.nbrOperands));
     }
+    else if(params.type == GameParam::Multiply)
+    {
+        m_QuestionFactory = std::shared_ptr<MulFactory>(new MulFactory({0, params.nbrRange}, params.nbrOperands));
+    }
     else
     {
         m_QuestionFactory = std::shared_ptr<CSVFactory>(new CSVFactory(params.csvFilePath.toStdString()));

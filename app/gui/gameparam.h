@@ -20,6 +20,7 @@ public:
     {
         Addition,
         Subtraction,
+        Multiply,
         CSV
     };
 
