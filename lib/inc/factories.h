@@ -98,6 +98,21 @@ public:
 };
 
 /**
+ * @brief The DivisionIntFactory class is the factory for simple random division questions.
+ */
+class DivFactory : public QuestionFactory
+{
+public:
+    DivFactory(std::pair<int,int> numberRange);
+
+    ~DivFactory();
+
+    std::shared_ptr<Question> createQuestion() override;
+
+    std::pair<int,int> m_numberRange;
+};
+
+/**
  * @brief The CSVFactory class reads a CSV file (question,answer).
  */
 class CSVFactory: public QuestionFactory

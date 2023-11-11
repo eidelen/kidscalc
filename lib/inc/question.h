@@ -137,5 +137,16 @@ public:
     virtual ~MultiplyQuestion();
 };
 
+class DivisionQuestionInt : public NumericQuestion
+{
+public:
+    /**
+     * Ctor for random division question
+     * @param numberRange The range in which the used numbers are
+     */
+    DivisionQuestionInt(std::pair<int,int> numberRange);
+
+    virtual ~DivisionQuestionInt();
+};
 
 #endif // QUESTION_H

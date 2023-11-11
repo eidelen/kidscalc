@@ -89,6 +89,22 @@ std::shared_ptr<Question> MulFactory::createQuestion()
 
 /***********************************************/
 
+DivFactory::DivFactory(std::pair<int,int> numberRange): QuestionFactory(),
+    m_numberRange(numberRange)
+{
+}
+
+DivFactory::~DivFactory()
+{
+}
+
+std::shared_ptr<Question> DivFactory::createQuestion()
+{
+    return std::shared_ptr<Question>(new DivisionQuestionInt(m_numberRange) );
+}
+
+/***********************************************/
+
 
 CSVFactory::CSVFactory(const std::string &filePath): m_qIdx(0)
 {

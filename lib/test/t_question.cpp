@@ -348,3 +348,33 @@ TEST(MulQuestion, Heavy)
     }
 }
 
+/*****************************************************************/
+
+TEST(DivIntQuestion, BasicUsage)
+{
+    auto s1 = new DivisionQuestionInt({5, 5}); // the only integer division of prime 5 is 1 or 5
+
+    ASSERT_FALSE(s1->isCorrect());
+    ASSERT_FALSE(s1->isAnswered());
+
+    std::string q = s1->getQuestion();
+    ASSERT_TRUE( q.compare("5 / 5")==0 || q.compare("5 / 1")==0);
+
+    if( q.compare("5 / 5")==0 )
+    {
+        s1->parseAnswer("1");
+
+        ASSERT_TRUE(s1->isAnswered());
+        ASSERT_TRUE(s1->isCorrect());
+    }
+
+    if( q.compare("5 / 1")==0 )
+    {
+        s1->parseAnswer("5");
+
+        ASSERT_TRUE(s1->isAnswered());
+        ASSERT_TRUE(s1->isCorrect());
+    }
+
+    delete s1;
+}
