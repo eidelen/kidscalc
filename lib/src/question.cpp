@@ -202,18 +202,21 @@ MultiplyQuestion::~MultiplyQuestion()
 
 DivisionQuestionInt::DivisionQuestionInt(std::pair<int, int> numberRange)
 {
-    while(true)
+    int divider;
+    int result = getRandomIntegerInRange(numberRange);
+    if( result == 0 )
     {
-        int numerator = getRandomIntegerInRange(numberRange);
-        int divider = getRandomIntegerInRange( {1, numerator} );
-
-        if( numerator % divider == 0 )
-        {
-            m_questionAsString = std::to_string(numerator) + " / " + std::to_string(divider);
-            m_trueResultAsString = std::to_string(numerator/divider);
-            break;
-        }
+        divider = getRandomIntegerInRange({1, numberRange.second});
     }
+    else
+    {
+        int maxDivider = numberRange.second / result;
+        divider = getRandomIntegerInRange({1, maxDivider});
+    }
+
+    int numerator = result * divider;
+    m_questionAsString = std::to_string(numerator) + " / " + std::to_string(divider);
+    m_trueResultAsString = std::to_string(result);
 }
 
 DivisionQuestionInt::~DivisionQuestionInt()

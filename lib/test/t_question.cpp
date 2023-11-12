@@ -352,29 +352,67 @@ TEST(MulQuestion, Heavy)
 
 TEST(DivIntQuestion, BasicUsage)
 {
-    auto s1 = new DivisionQuestionInt({5, 5}); // the only integer division of prime 5 is 1 or 5
+    auto s1 = new DivisionQuestionInt({5, 5}); // Result is 5 and no number can exceed 5 -> 5 / 1 = 5
 
     ASSERT_FALSE(s1->isCorrect());
     ASSERT_FALSE(s1->isAnswered());
 
     std::string q = s1->getQuestion();
-    ASSERT_TRUE( q.compare("5 / 5")==0 || q.compare("5 / 1")==0);
+    ASSERT_TRUE( q.compare("5 / 1")==0 );
 
-    if( q.compare("5 / 5")==0 )
-    {
-        s1->parseAnswer("1");
+    s1->parseAnswer("5");
 
-        ASSERT_TRUE(s1->isAnswered());
-        ASSERT_TRUE(s1->isCorrect());
-    }
-
-    if( q.compare("5 / 1")==0 )
-    {
-        s1->parseAnswer("5");
-
-        ASSERT_TRUE(s1->isAnswered());
-        ASSERT_TRUE(s1->isCorrect());
-    }
+    ASSERT_TRUE(s1->isAnswered());
+    ASSERT_TRUE(s1->isCorrect());
 
     delete s1;
 }
+
+TEST(DivIntQuestion, Heavy)
+{
+    for(int k = 1; k < 100; k++)
+    {
+        auto s1 = new DivisionQuestionInt({k, k});
+
+        ASSERT_FALSE(s1->isCorrect());
+        ASSERT_FALSE(s1->isAnswered());
+
+        std::string quest = std::to_string(k) + " / 1";
+        ASSERT_TRUE( s1->getQuestion().compare(quest)==0 );
+
+        s1->parseAnswer( std::to_string(k) );
+
+        ASSERT_TRUE(s1->isAnswered());
+        ASSERT_TRUE(s1->isCorrect());
+
+        delete s1;
+    }
+}
+
+TEST(DivIntQuestion, Random)
+{
+    for(int k = 1; k < 1000; k++)
+    {
+        auto s1 = new DivisionQuestionInt({0, 1000});
+
+        ASSERT_FALSE(s1->isCorrect());
+        ASSERT_FALSE(s1->isAnswered());
+
+        // parse question
+        int num = std::stoi(s1->getQuestion().substr(0, s1->getQuestion().find("/")));
+        int div = std::stoi(s1->getQuestion().substr(s1->getQuestion().find("/")+1 ));
+        int res = num / div;
+
+        ASSERT_LE(num, 1000);
+        ASSERT_LE(div, 1000);
+        ASSERT_LE(res, 1000);
+
+        s1->parseAnswer( std::to_string(res) );
+
+        ASSERT_TRUE(s1->isAnswered());
+        ASSERT_TRUE(s1->isCorrect());
+
+        delete s1;
+    }
+}
+

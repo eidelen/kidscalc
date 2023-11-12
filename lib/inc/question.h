@@ -142,7 +142,7 @@ class DivisionQuestionInt : public NumericQuestion
 public:
     /**
      * Ctor for random division question
-     * @param numberRange The range in which the used numbers are
+     * @param numberRange The range in which the answer is.
      */
     DivisionQuestionInt(std::pair<int,int> numberRange);
 

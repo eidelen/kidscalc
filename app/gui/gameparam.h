@@ -21,6 +21,7 @@ public:
         Addition,
         Subtraction,
         Multiply,
+        Division,
         CSV
     };
 
