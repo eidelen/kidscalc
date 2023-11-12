@@ -54,11 +54,6 @@ public:
         return m_answered && m_theAnswer == (1200 + 34);
     }
 
-    int getRndInt(std::pair<int, int> range)
-    {
-        return getRandomIntegerInRange(range);
-    }
-
     int m_theAnswer;
 };
 
@@ -83,24 +78,6 @@ TEST(Question, BasicInterface)
 
     delete q;
 }
-
-TEST(Question, RandomInt)
-{
-    MyQuestion* q = new MyQuestion();
-
-    // test that all numbers in range are at least once generated, when trying enough hard.
-    // self evident, this test might fail in rare cases :)
-
-    std::vector<bool> res(10, false);
-
-    for(size_t i = 0; i < 100; i++)
-        res.at(q->getRndInt({0, 9})) = true;
-
-    ASSERT_TRUE(std::all_of(res.begin(), res.end(), [](bool v) { return v; }));
-
-    delete q;
-}
-
 
 class MyFactory : public QuestionFactory
 {
@@ -153,6 +130,11 @@ public:
     MyNumQuest() : NumericQuestion(){}
     virtual ~MyNumQuest(){}
     std::string getParsedResult(){return m_givenResultAsString;}
+
+    int getRndInt(std::pair<int, int> range)
+    {
+        return getRandomIntegerInRange(range);
+    }
 };
 
 TEST(NumericQuestion, Parse)
@@ -169,6 +151,23 @@ TEST(NumericQuestion, Parse)
     n1->parseAnswer("+7");
     ASSERT_STRCASEEQ(n1->getParsedResult().c_str(), "7");
     delete n1;
+}
+
+TEST(NumericQuestion, RandomInt)
+{
+    MyNumQuest* q = new MyNumQuest();
+
+    // test that all numbers in range are at least once generated, when trying enough hard.
+    // self evident, this test might fail in rare cases :)
+
+    std::vector<bool> res(10, false);
+
+    for(size_t i = 0; i < 100; i++)
+        res.at(q->getRndInt({0, 9})) = true;
+
+    ASSERT_TRUE(std::all_of(res.begin(), res.end(), [](bool v) { return v; }));
+
+    delete q;
 }
 
 /*******************************************/

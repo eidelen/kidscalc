@@ -66,14 +66,6 @@ std::string Question::getRightAnswer() const
     return m_trueResultAsString;
 }
 
-int Question::getRandomIntegerInRange(std::pair<int, int> numberRange) const
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
-    return dist(gen);
-}
-
 /************************************************/
 
 NumericQuestion::NumericQuestion()
@@ -96,6 +88,13 @@ void NumericQuestion::parseAnswer(const std::string &answer)
     } ), m_givenResultAsString.end());
 }
 
+int NumericQuestion::getRandomIntegerInRange(std::pair<int, int> numberRange) const
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(numberRange.first, numberRange.second);
+    return dist(gen);
+}
 
 /*********************** SumQuestion *********************************/
 
