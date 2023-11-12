@@ -135,6 +135,11 @@ public:
     {
         return getRandomIntegerInRange(range);
     }
+
+    std::vector<int> getDivs(int n)
+    {
+        return getPossibleDividers(n);
+    }
 };
 
 TEST(NumericQuestion, Parse)
@@ -166,6 +171,27 @@ TEST(NumericQuestion, RandomInt)
         res.at(q->getRndInt({0, 9})) = true;
 
     ASSERT_TRUE(std::all_of(res.begin(), res.end(), [](bool v) { return v; }));
+
+    delete q;
+}
+
+TEST(NumericQuestion, Dividers)
+{
+    MyNumQuest* q = new MyNumQuest();
+    std::vector<int> divs = q->getDivs(10);
+    std::vector<int> shouldDivs = {1, 2, 5, 10};
+
+    ASSERT_EQ(divs.size(), shouldDivs.size());
+
+    // todo: Check values of vectors
+
+/*
+    std::vector<bool> res(10, false);
+
+    for(size_t i = 0; i < 100; i++)
+        res.at(q->getRndInt({0, 9})) = true;
+
+    ASSERT_TRUE(std::all_of(res.begin(), res.end(), [](bool v) { return v; }));*/
 
     delete q;
 }

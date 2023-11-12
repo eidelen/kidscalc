@@ -29,6 +29,7 @@
 #include <vector>
 
 
+
 /**
  * @brief Calculation question interface.
  */
@@ -96,6 +97,7 @@ public:
 
 protected:
     int getRandomIntegerInRange(std::pair<int,int> numberRange) const;
+    std::vector<int> getPossibleDividers(int number) const;
 };
 
 

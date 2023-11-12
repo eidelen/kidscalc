@@ -96,6 +96,16 @@ int NumericQuestion::getRandomIntegerInRange(std::pair<int, int> numberRange) co
     return dist(gen);
 }
 
+std::vector<int> NumericQuestion::getPossibleDividers(int number) const
+{
+    std::vector<int> dividers;
+    for(int k = 1; k <= number; k++)
+        if(number % k == 0)
+            dividers.push_back(k);
+
+    return dividers;
+}
+
 /*********************** SumQuestion *********************************/
 
 SumQuestion::SumQuestion(std::pair<int, int> numberRange, size_t length)
