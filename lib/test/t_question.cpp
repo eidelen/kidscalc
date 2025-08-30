@@ -441,3 +441,51 @@ TEST(DivIntQuestion, Random)
     }
 }
 
+/*****************************************************************/
+
+TEST(VerQuestion, BasicUsage)
+{
+    auto s1 = new VerliebteZahlQuestion(10);
+
+    ASSERT_FALSE(s1->isCorrect());
+    ASSERT_FALSE(s1->isAnswered());
+
+    std::string q = s1->getQuestion();
+    std::string q_part = q.substr(0, q.find(":"));
+    ASSERT_TRUE(q_part.compare("Verliebt 10")==0);
+
+    std::string q_num = q.substr(q.find(":") + 2, q.length());
+    int q_int = std::stoi(q_num);
+    int res_int = 10 - q_int;
+
+    s1->parseAnswer(std::to_string(res_int));
+
+    ASSERT_TRUE(s1->isAnswered());
+    ASSERT_TRUE(s1->isCorrect());
+
+    delete s1;
+}
+
+TEST(VerQuestion, Heavy)
+{
+    for(int k = 1; k < 100; k++)
+    {
+        auto s1 = new VerliebteZahlQuestion(100);
+
+        std::string q = s1->getQuestion();
+
+        std::string q_num = q.substr(q.find(":") + 2, q.length());
+        int q_int = std::stoi(q_num);
+        int res_int = 100 - q_int;
+
+        s1->parseAnswer(std::to_string(res_int));
+
+        ASSERT_TRUE(s1->isAnswered());
+        ASSERT_TRUE(s1->isCorrect());
+
+        delete s1;
+    }
+}
+
+
+

@@ -153,4 +153,17 @@ public:
     virtual ~DivisionQuestionInt();
 };
 
+class VerliebteZahlQuestion : public NumericQuestion
+{
+public:
+    /**
+     * Ctor for random division question
+     * @param numberRange The range in which the answer is.
+     */
+    VerliebteZahlQuestion(int base);
+
+    virtual ~VerliebteZahlQuestion();
+};
+
+
 #endif // QUESTION_H

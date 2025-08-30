@@ -141,3 +141,18 @@ std::pair<bool,size_t> CSVFactory::getTotalNumberOfQuestions() const
 {
     return {true, m_questions.size()};
 }
+
+/***********************************************/
+
+VerFactory::VerFactory(int base): m_base(base)
+{
+}
+
+VerFactory::~VerFactory()
+{
+}
+
+std::shared_ptr<Question> VerFactory::createQuestion()
+{
+    return std::shared_ptr<Question>(new VerliebteZahlQuestion(m_base));
+}

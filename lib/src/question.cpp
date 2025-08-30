@@ -230,5 +230,21 @@ DivisionQuestionInt::DivisionQuestionInt(std::pair<int, int> numberRange)
 
 DivisionQuestionInt::~DivisionQuestionInt()
 {
+    
+}
 
+/*********************** VerliebteZahlQuestion *********************************/
+
+VerliebteZahlQuestion::VerliebteZahlQuestion(int base)
+{
+
+    int question = getRandomIntegerInRange({0, base});
+
+    m_questionAsString = "Verliebt " +  std::to_string(base) + ": " + std::to_string(question);
+    m_trueResultAsString = std::to_string(base - question);
+}
+
+VerliebteZahlQuestion::~VerliebteZahlQuestion()
+{
+    
 }

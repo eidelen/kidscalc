@@ -131,4 +131,21 @@ public:
     size_t m_qIdx;
 };
 
+
+
+/**
+ * @brief The VerFactory class is the factory for simple random Verliebte Zahl questions.
+ */
+class VerFactory : public QuestionFactory
+{
+public:
+    VerFactory(int base);
+
+    ~VerFactory();
+
+    std::shared_ptr<Question> createQuestion() override;
+
+    int m_base;
+};
+
 #endif // FACTORIES_H
