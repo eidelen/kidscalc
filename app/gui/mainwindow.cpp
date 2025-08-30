@@ -163,6 +163,10 @@ void MainWindow::newGame(GameParam::Params params)
     {
         m_QuestionFactory = std::shared_ptr<DivFactory>(new DivFactory({0, params.nbrRange}));
     }
+    else if(params.type == GameParam::Verliebt)
+    {
+        m_QuestionFactory = std::shared_ptr<VerFactory>(new VerFactory(params.nbrRange));
+    }
     else
     {
         m_QuestionFactory = std::shared_ptr<CSVFactory>(new CSVFactory(params.csvFilePath.toStdString()));

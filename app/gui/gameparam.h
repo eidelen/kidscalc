@@ -22,7 +22,8 @@ public:
         Subtraction,
         Multiply,
         Division,
-        CSV
+        CSV,
+        Verliebt
     };
 
     struct Params

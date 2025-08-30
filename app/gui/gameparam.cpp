@@ -21,6 +21,7 @@ GameParam::GameParam(QWidget *parent) :
     m_types.push_back({"Multiply", OpType::Multiply});
     m_types.push_back({"Division", OpType::Division});
     m_types.push_back({"CSV", OpType::CSV});
+    m_types.push_back({"Verliebt", OpType::Verliebt});
 
     // add operations to dropdown
     for(const auto& [typeQStr, typeId] : m_types)
